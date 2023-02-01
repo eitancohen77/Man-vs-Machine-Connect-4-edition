@@ -1,0 +1,21 @@
+#header {
+    text-align: center;
+}
+
+#board {
+    background-color:blue;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(7, 80px);
+    grid-template-rows: repeat(7, 80px);
+    width: 560px;
+    height: 480px;
+    margin: auto;
+    justify-content: center;
+}
+
+.circle {
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid blue;
+}
