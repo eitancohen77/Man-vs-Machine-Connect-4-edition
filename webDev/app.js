@@ -1,8 +1,8 @@
 $(document).ready(function() {
     circles = document.getElementsByClassName('circle')
     let count = 0;
-    let player = -1;
-    let gameOver = false
+    let player = -1; // FOR JOE!!!: This variable controls which turn it is. It does this by acting as a clock, switching from -1 to 1
+    let gameOver = false 
     const restart = document.querySelector('#restart')
     let winnerText = document.querySelector('#winner')
 
@@ -25,6 +25,10 @@ $(document).ready(function() {
                 }
                 id -= 7;
                 
+                // FOR JOE!!!:
+                // As you can see one of the factors to play requires player to either be -1 or 1. 
+                // So my idea is if you can control the bot act upon this variable and make decisions based on it.
+                // So for example when player == 1, the bot can act.
                 if ((circle.getAttribute('taken')) === '0' && player === -1) {
                     circle.style.backgroundColor = 'red';
                     circle.setAttribute('taken', 1);
@@ -38,6 +42,8 @@ $(document).ready(function() {
                     }
                     player *= -1;
                 }
+
+                //FOR JOE!!!: The other factor (The other player's turn)
                 else if ((circle.getAttribute('taken')) === '0' && player === 1) {
                     circle.style.backgroundColor = 'yellow';
                     circle.setAttribute('taken', 2);
