@@ -3,6 +3,7 @@ $(document).ready(function() {
     let count = 0;
     let player = -1;
     let gameOver = false
+    const restart = document.querySelector('#restart')
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
@@ -11,8 +12,7 @@ $(document).ready(function() {
         circle.setAttribute('taken', 0);
         count++;
 
-        
-        
+
         circle.addEventListener('click', function() {
             if (gameOver === false) {
                 let id = parseInt(circle.getAttribute('id')) % 7
@@ -46,8 +46,21 @@ $(document).ready(function() {
                     player *= -1;
                 } 
             }
-        });       
+        }); 
+              
     }
+
+    // Reset the board
+    restart.addEventListener('click', function() {
+        for (let i = 0; i < circles.length; i++) {
+            let circle = circles[i];
+            circle.style.backgroundColor = 'white';
+            circle.setAttribute('taken', 0);
+        }
+        count = 0;
+        player = -1;
+        gameOver = false
+    });
 });
 
 function checkWinner(color, id) {
