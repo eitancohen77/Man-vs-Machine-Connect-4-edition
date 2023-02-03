@@ -1,17 +1,18 @@
 $(document).ready(function() {
     circles = document.getElementsByClassName('circle')
-    let count = 0;
+    let countId = 0;
     let player = -1; // FOR JOE!!!: This variable controls which turn it is. It does this by acting as a clock, switching from -1 to 1
     let gameOver = false 
     const restart = document.querySelector('#restart')
     let winnerText = document.querySelector('#winner')
+    let count = 0;
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
         let circle = circles[i];
-        circle.setAttribute('id', count);
+        circle.setAttribute('id', countId);
         circle.setAttribute('taken', 0);
-        count++;
+        countId++;
 
 
         circle.addEventListener('click', function() {
@@ -40,6 +41,7 @@ $(document).ready(function() {
                         console.log('red wins');
                         gameOver = true;
                     }
+                    count++;
                     player *= -1;
                 }
 
@@ -54,7 +56,13 @@ $(document).ready(function() {
                         console.log('yellow wins')
                         gameOver = true;
                     }
+                    count++;
                     player *= -1;
+                }
+                if (gameOver === false && count === 42) {
+                    winnerText.textContent = 'DRAW!'
+                    winnerText.style.color = 'white'
+                    gameOver = true;
                 } 
             }
         }); 
@@ -73,6 +81,7 @@ $(document).ready(function() {
         count = 0;
         player = -1;
         gameOver = false
+
     });
 });
 
