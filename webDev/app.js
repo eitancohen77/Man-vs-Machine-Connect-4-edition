@@ -1,7 +1,8 @@
 $(document).ready(function() {
     circles = document.getElementsByClassName('circle')
     let count = 0;
-    let counter = -1;
+    let player = -1;
+    let gameOver = false
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
@@ -10,36 +11,42 @@ $(document).ready(function() {
         circle.setAttribute('taken', 0);
         count++;
 
+        
+        
         circle.addEventListener('click', function() {
-            let id = parseInt(circle.getAttribute('id')) % 7
-            let topCircle = document.getElementById(id);
-            while (id < 42 && topCircle.getAttribute('taken') === '0') {
-                circle = topCircle;
-                id += 7
-                topCircle = document.getElementById(id);
-            }
-            id -= 7;
-            
-            if ((circle.getAttribute('taken')) === '0' && counter === -1) {
-                circle.style.backgroundColor = 'red';
-                circle.setAttribute('taken', 1);
+            if (gameOver === false) {
+                let id = parseInt(circle.getAttribute('id')) % 7
+                let topCircle = document.getElementById(id);
+                while (id < 42 && topCircle.getAttribute('taken') === '0') {
+                    circle = topCircle;
+                    id += 7
+                    topCircle = document.getElementById(id);
+                }
+                id -= 7;
+                
+                if ((circle.getAttribute('taken')) === '0' && player === -1) {
+                    circle.style.backgroundColor = 'red';
+                    circle.setAttribute('taken', 1);
 
-                // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
-                if (checkWinner('red', id)) {
-                    console.log('red wins')
+                    // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
+                    if (checkWinner('red', id)) {
+                        console.log('red wins');
+                        gameOver = true;
+                    }
+                    player *= -1;
                 }
-                counter *= -1;
+                else if ((circle.getAttribute('taken')) === '0' && player === 1) {
+                    circle.style.backgroundColor = 'yellow';
+                    circle.setAttribute('taken', 2);
+        
+                    if (checkWinner('yellow', id)) {
+                        console.log('yellow wins')
+                        gameOver = true;
+                    }
+                    player *= -1;
+                } 
             }
-            else if ((circle.getAttribute('taken')) === '0' && counter === 1) {
-                circle.style.backgroundColor = 'yellow';
-                circle.setAttribute('taken', 2);
-    
-                if (checkWinner('yellow', id)) {
-                    console.log('yellow wins')
-                }
-                counter *= -1;
-            } 
-        });
+        });       
     }
 });
 

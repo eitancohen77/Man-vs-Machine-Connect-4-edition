@@ -11,7 +11,11 @@
     width: 560px;
     height: 480px;
     margin: auto;
-    justify-content: center;
+}
+
+#restartButton {
+    display: block;
+    margin: auto;
 }
 
 .circle {
