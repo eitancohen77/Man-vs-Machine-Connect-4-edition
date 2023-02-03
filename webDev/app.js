@@ -4,6 +4,7 @@ $(document).ready(function() {
     let player = -1;
     let gameOver = false
     const restart = document.querySelector('#restart')
+    let winnerText = document.querySelector('#winner')
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
@@ -30,6 +31,8 @@ $(document).ready(function() {
 
                     // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
                     if (checkWinner('red', id)) {
+                        winnerText.textContent = 'RED WINS!!!!!!!!'
+                        winnerText.style.color = 'red'
                         console.log('red wins');
                         gameOver = true;
                     }
@@ -40,6 +43,8 @@ $(document).ready(function() {
                     circle.setAttribute('taken', 2);
         
                     if (checkWinner('yellow', id)) {
+                        winnerText.textContent = 'YELLOW WINS!!!!!!!!'
+                        winnerText.style.color = 'yellow'
                         console.log('yellow wins')
                         gameOver = true;
                     }
@@ -57,6 +62,8 @@ $(document).ready(function() {
             circle.style.backgroundColor = 'white';
             circle.setAttribute('taken', 0);
         }
+        winnerText.textContent = ''
+        winnerText.style.color = 'black'
         count = 0;
         player = -1;
         gameOver = false
