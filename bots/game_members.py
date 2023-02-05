@@ -20,15 +20,27 @@
 
 
 def print_board(board: list) -> None:
-    convert_str(board)
-
     for x in range(len(board)):
-        print('--------------------------')
-        row = ' | '.join(board[x])
-        print(row)
+        row = board[x]
+        line = ''
+        for item in row:
+            line += str(item) + ' '
+        print(line)
+        print('---------------------------')
 
 
-def convert_str(board) -> None:
-    for x in range(len(board)):
-        for y in range(len(board[x])):
-            board[x][y] = str(board[x][y])
+class Circle:
+    hole = 0
+    id = -1
+
+    def __init__(self, id: int):
+        self.id = id
+
+    def __str__(self):
+        return '|' + str(self.hole) + '|'
+
+    def get_id(self):
+        return self.id
+
+    def get_hole(self):
+        return self.hole

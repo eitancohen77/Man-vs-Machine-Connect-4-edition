@@ -1,40 +1,41 @@
-# from game_members import check_winner
-from game_members import print_board
+from game_members import Circle, print_board
 
-count = 0
-player = -1
+count_id = 0
+board = [[], [], [], [], [], []]
+
+row = 0
+for i in range(42):
+    if len(board[row]) == 7:  # circle goes into the next row
+        row += 1
+
+    new_circle = Circle(i)
+    board[row].append(new_circle)
+
+player = -1  # switches from 1 to -1
 game_over = False
+count = 0  # Checks if all squares are filled
 
-board = [
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0]
-]
+while not game_over and count < 42:
+    col = -1
 
-print_board(board)
+    while col == -1:
+        col = int(input('Please choose a column to drop a piece in: '))
 
-unused_spaced = 42
+        if board[0][col].get_hole() != 0:
+            col = -1
+            print('That column is filled, pick another')
 
-while not game_over:
-    spot = -1
+    row = 0
 
-    while spot == -1:  # To make sure the column is not filled
-        spot = int(input('Pick a column to drop a piece: '))
+    while board[row][col] == 0 and row < 6:
+        row += 1
 
-        if board[0][spot] != 0:
-            print('This column is filled, pick a different one.')
-            continue
+    row -= 1
 
-    row = 5
-
-    while board[row][spot] == 0 and row >= 0:
-        row -= 1
-
-    board[row][spot] = player
-
+    board[row][col] = player
+    print(row)
     player *= -1
 
     print_board(board)
+
+
