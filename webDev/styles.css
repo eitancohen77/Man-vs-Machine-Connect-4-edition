@@ -3,14 +3,15 @@
 }
 
 #board {
-    background-color:blue;
+    background-color:rgb(59, 183, 255);
     display: grid;
     justify-content: center;
-    grid-template-columns: repeat(7, 80px);
-    grid-template-rows: repeat(7, 80px);
-    width: 560px;
-    height: 480px;
+    grid-template-columns: repeat(7, 85px);
+    grid-template-rows: repeat(7, 85px);
+    width: 595px;
+    height: 510px;
     margin: auto;
+    border-radius: 2%;
 }
 
 #winner {
@@ -26,5 +27,7 @@
 .circle {
     background-color: white;
     border-radius: 50%;
-    border: 1px solid blue;
+    border: 1px solid rgb(59, 183, 255);
+    margin: 5px;
+
 }
