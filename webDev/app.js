@@ -6,6 +6,9 @@ $(document).ready(function() {
     const restart = document.querySelector('#restart')
     let winnerText = document.querySelector('#winner')
     let count = 0;
+    let gameHistorys = [];
+    let game = [];
+    let position = {}
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
@@ -31,6 +34,15 @@ $(document).ready(function() {
                 // So my idea is if you can control the bot act upon this variable and make decisions based on it.
                 // So for example when player == 1, the bot can act.
                 if ((circle.getAttribute('taken')) === '0' && player === -1) {
+
+                    // Save Data of Games
+                    position = {
+                        plays: -1,
+                        position: id
+                    }
+                    game.push(position);
+
+
                     circle.style.backgroundColor = 'red';
                     circle.setAttribute('taken', 1);
 
@@ -40,6 +52,15 @@ $(document).ready(function() {
                         winnerText.style.color = 'red'
                         console.log('red wins');
                         gameOver = true;
+
+                        //Save data of game
+                        gameHistorys.push({
+                            id: Math.random(),
+                            winner: -1,
+                            game: game
+                        })
+                        game = []
+
                     }
                     count++;
                     player *= -1;
@@ -47,6 +68,15 @@ $(document).ready(function() {
 
                 //FOR JOE!!!: The other factor (The other player's turn)
                 else if ((circle.getAttribute('taken')) === '0' && player === 1) {
+                    
+                    // Save Data of Games
+                    position = {
+                        plays: 1,
+                        position: id
+                    }
+                    game.push(position);
+
+
                     circle.style.backgroundColor = 'yellow';
                     circle.setAttribute('taken', 2);
         
@@ -55,6 +85,15 @@ $(document).ready(function() {
                         winnerText.style.color = 'yellow'
                         console.log('yellow wins')
                         gameOver = true;
+
+                        //Save data of game
+                        gameHistorys.push({
+                            id: Math.random(),
+                            winner: 1,
+                            game: game
+                        })
+                        game = []
+
                     }
                     count++;
                     player *= -1;
@@ -63,6 +102,14 @@ $(document).ready(function() {
                     winnerText.textContent = 'DRAW!'
                     winnerText.style.color = 'white'
                     gameOver = true;
+
+                    // Save data of Game
+                    gameHistorys.push({
+                        id: Math.random(),
+                        winner: 0,
+                        game: game
+                    })
+                    game = []
                 } 
             }
         }); 
@@ -71,6 +118,7 @@ $(document).ready(function() {
 
     // Reset the board
     restart.addEventListener('click', function() {
+        console.log(gameHistorys)
         for (let i = 0; i < circles.length; i++) {
             let circle = circles[i];
             circle.style.backgroundColor = 'white';
