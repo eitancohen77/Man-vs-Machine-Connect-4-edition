@@ -9,6 +9,9 @@ $(document).ready(function() {
     let gameHistorys = [];
     let game = [];
     let position = {}
+    const horizontalPosition = [43, 127, 212, 297, 382, 467, 552];
+    let verticalPosition = [0, 0, 0, 0, 0, 0, 0];
+    let dropPosition = 516;
 
     // What this code does is it loops through the entire div of circles and gives each one a sequential id
     for (let i = 0; i < circles.length; i++) {
@@ -17,10 +20,39 @@ $(document).ready(function() {
         circle.setAttribute('taken', 0);
         countId++;
 
+        circle.addEventListener('mouseover', function() {
+            circle.style.cursor = 'pointer';
+            let id = parseInt(circle.getAttribute('id')) % 7
+            let topCircle = document.getElementById(id);
+            while (id < 42 && topCircle.getAttribute('taken') === '0') {
+                circle = topCircle;
+                id += 7
+                topCircle = document.getElementById(id);
+            }
+            if (player === -1) {
+                circle.style.backgroundColor = 'red'
+            } else {
+                circle.style.backgroundColor = 'yellow'
+            }
+            
+        })
+        circle.addEventListener('mouseout', function(event) {
+            let id = parseInt(circle.getAttribute('id')) % 7
+            let topCircle = document.getElementById(id);
+            while (id < 42 && topCircle.getAttribute('taken') === '0') {
+                circle = topCircle;
+                id += 7
+                topCircle = document.getElementById(id);
+            }
 
+            circle.style.backgroundColor = 'white'
+            circle.style.cursor = 'default'
+            
+        })
         circle.addEventListener('click', function() {
             if (gameOver === false) {
-                let id = parseInt(circle.getAttribute('id')) % 7
+                let id = parseInt(circle.getAttribute('id')) % 7;
+                const modId = id;
                 let topCircle = document.getElementById(id);
                 while (id < 42 && topCircle.getAttribute('taken') === '0') {
                     circle = topCircle;
@@ -28,42 +60,49 @@ $(document).ready(function() {
                     topCircle = document.getElementById(id);
                 }
                 id -= 7;
-                
-                // FOR JOE!!!:
-                // As you can see one of the factors to play requires player to either be -1 or 1. 
-                // So my idea is if you can control the bot act upon this variable and make decisions based on it.
-                // So for example when player == 1, the bot can act.
-                if ((circle.getAttribute('taken')) === '0' && player === -1) {
 
+                
+                if ((circle.getAttribute('taken')) === '0' && player === -1) {
+                    circle.style.backgroundColor = 'white'
                     // Save Data of Games
                     position = {
                         plays: -1,
                         position: id
                     }
                     game.push(position);
+                    
+                    const fallingCircle = document.createElement('div');
+                    fallingCircle.classList.add('fallingCircle');
+                    fallingCircle.style.setProperty('left', `${horizontalPosition[modId]}px`)
+                    fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[modId] * 85}px`);
+                    verticalPosition[modId] += 1;
+                    hover_grid.appendChild(fallingCircle);
+                    fallingCircle.classList.add('fall');
+                    setTimeout(() => {
+                        circle.style.backgroundColor = 'red';
+                        fallingCircle.remove()
+                        circle.setAttribute('taken', 1);
 
+                        // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
+                        if (checkWinner('red', id)) {
+                            winnerText.textContent = 'RED WINS!!!!!!!!'
+                            winnerText.style.color = 'red'
+                            console.log('red wins');
+                            gameOver = true;
 
-                    circle.style.backgroundColor = 'red';
-                    circle.setAttribute('taken', 1);
+                            //Save data of game
+                            gameHistorys.push({
+                                id: Math.random(),
+                                winner: -1,
+                                game: game
+                            })
+                            game = []
 
-                    // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
-                    if (checkWinner('red', id)) {
-                        winnerText.textContent = 'RED WINS!!!!!!!!'
-                        winnerText.style.color = 'red'
-                        console.log('red wins');
-                        gameOver = true;
+                        }
+                        count++;
+                        player *= -1;
+                    }, 700);
 
-                        //Save data of game
-                        gameHistorys.push({
-                            id: Math.random(),
-                            winner: -1,
-                            game: game
-                        })
-                        game = []
-
-                    }
-                    count++;
-                    player *= -1;
                 }
 
                 //FOR JOE!!!: The other factor (The other player's turn)
@@ -76,27 +115,37 @@ $(document).ready(function() {
                     }
                     game.push(position);
 
-
-                    circle.style.backgroundColor = 'yellow';
-                    circle.setAttribute('taken', 2);
+                    const fallingCircle = document.createElement('div');
+                    fallingCircle.style.backgroundColor = 'yellow'
+                    fallingCircle.style.setProperty('left', `${horizontalPosition[modId]}px`)
+                    fallingCircle.classList.add('fallingCircle');
+                    fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[modId] * 85}px`);
+                    verticalPosition[modId] += 1;
+                    hover_grid.appendChild(fallingCircle);
+                    fallingCircle.classList.add('fall');
+                    setTimeout(() => {
+                        circle.style.backgroundColor = 'yellow';
+                        fallingCircle.remove()
+                        circle.setAttribute('taken', 2);
         
-                    if (checkWinner('yellow', id)) {
-                        winnerText.textContent = 'YELLOW WINS!!!!!!!!'
-                        winnerText.style.color = 'yellow'
-                        console.log('yellow wins')
-                        gameOver = true;
+                        if (checkWinner('yellow', id)) {
+                            winnerText.textContent = 'YELLOW WINS!!!!!!!!'
+                            winnerText.style.color = 'yellow'
+                            console.log('yellow wins')
+                            gameOver = true;
 
-                        //Save data of game
-                        gameHistorys.push({
-                            id: Math.random(),
-                            winner: 1,
-                            game: game
-                        })
-                        game = []
+                            //Save data of game
+                            gameHistorys.push({
+                                id: Math.random(),
+                                winner: 1,
+                                game: game
+                            })
+                            game = []
 
-                    }
-                    count++;
-                    player *= -1;
+                        }
+                        count++;
+                        player *= -1;
+                    }, 700);                    
                 }
                 if (gameOver === false && count === 42) {
                     winnerText.textContent = 'DRAW!'
@@ -112,8 +161,9 @@ $(document).ready(function() {
                     game = []
                 } 
             }
-        }); 
-              
+        });
+            
+
     }
 
     // Reset the board
@@ -129,7 +179,7 @@ $(document).ready(function() {
         count = 0;
         player = -1;
         gameOver = false
-
+        verticalPosition = [0, 0, 0, 0, 0, 0, 0];
     });
 });
 

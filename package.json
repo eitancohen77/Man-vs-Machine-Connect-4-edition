@@ -1,0 +1,24 @@
+{
+  "name": "man-vs-machine-connect-4-edition",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eitancohen77/Man-vs-Machine-Connect-4-edition.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eitancohen77/Man-vs-Machine-Connect-4-edition/issues"
+  },
+  "homepage": "https://github.com/eitancohen77/Man-vs-Machine-Connect-4-edition#readme",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "ejs-mate": "^4.0.0",
+    "express": "^4.18.2"
+  }
+}

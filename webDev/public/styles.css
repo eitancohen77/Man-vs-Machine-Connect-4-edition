@@ -2,6 +2,41 @@
     text-align: center;
 }
 
+#hover_grid {
+    position: relative;
+    justify-content: center;
+    width: 595px;
+    height: 85px;
+    margin: auto;
+    background-color:white
+}
+
+.fallingCircle {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    width: 73px;
+    height: 73px;
+    border-radius: 50px;
+    background-color: red;
+    animation: fall 0.7s ease-in-out forwards;
+}
+
+.hover_circle {
+    border-radius: 50%;
+    border: 1px solid white;
+    margin: 5px;
+    background-color: red;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.noclick {
+    cursor: default;
+}
+
 #board {
     background-color:rgb(59, 183, 255);
     display: grid;
@@ -24,10 +59,20 @@
     margin: auto;
 }
 
+
 .circle {
     background-color: white;
     border-radius: 50%;
     border: 1px solid rgb(59, 183, 255);
     margin: 5px;
-
 }
+
+
+@keyframes fall {
+    from {
+      top: 0;
+    }
+    to {
+      top: var(--drop-position);
+    }
+  }
