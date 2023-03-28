@@ -28,7 +28,7 @@ $(document).ready(function() {
         circle.setAttribute('taken', 0);
         countId++;
         
-
+        
         circle.addEventListener('mouseover', function() {
             if (gameOver === false) {
                 circle.style.cursor = 'pointer';
@@ -45,7 +45,7 @@ $(document).ready(function() {
                 }  
             }   
         })
-        circle.addEventListener('mouseout', function(event) {
+        circle.addEventListener('mouseout', function() {
             if (gameOver === false) {
                 let id = parseInt(circle.getAttribute('id')) % 7
                 if (boardArray[0][id] === 0) { // In case it wants to delete already placed divs.
@@ -65,7 +65,7 @@ $(document).ready(function() {
         circle.addEventListener('click', function() {        
             if (/* (circle.getAttribute('taken')) === '0' &&  */player === 1 && gameOver === false) {
                 let id = parseInt(this.getAttribute('id')) % 7;
-                const modId = id;
+                const col = id;
                 let topCircle = document.getElementById(id);
                 while (id < 42 && topCircle.getAttribute('taken') === '0') {
                     circle = topCircle;
@@ -73,10 +73,11 @@ $(document).ready(function() {
                     topCircle = document.getElementById(id);
                 }
                 id -= 7;
-                console.log(id)
                 
-                let level = Math.floor(id/7);
-                boardArray[level][modId] = 1;
+                
+                let row = Math.floor(id/7);
+                boardArray[row][col] = 1;
+                //console.log(boardArray)
 
                 circle.style.backgroundColor = 'white'
                 // Save Data of Games
@@ -88,9 +89,9 @@ $(document).ready(function() {
                 
                 const fallingCircle = document.createElement('div');
                 fallingCircle.classList.add('fallingCircle');
-                fallingCircle.style.setProperty('left', `${horizontalPosition[modId]}px`)
-                fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[modId] * 85}px`);
-                verticalPosition[modId] += 1;
+                fallingCircle.style.setProperty('left', `${horizontalPosition[col]}px`)
+                fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[col] * 85}px`);
+                verticalPosition[col] += 1;
                 hover_grid.appendChild(fallingCircle);
                 fallingCircle.classList.add('fall');
                 setTimeout(() => {
@@ -99,7 +100,7 @@ $(document).ready(function() {
                     circle.setAttribute('taken', 1);
 
                     // Make a function that takes in the color red and checks if there is 4 reds criss, cross, horizontal, vertical
-                    if (checkWinner('red', id)) {
+                    if (checkWinner(boardArray, 1, row, col)) {
                         winnerText.textContent = 'RED WINS!!!!!!!!'
                         winnerText.style.color = 'red'
                         console.log('red wins');
@@ -118,23 +119,23 @@ $(document).ready(function() {
                     player *= -1;
                     if (player === -1 && gameOver === false) {
                         let rand = 7
-                        let levelCounter = 5
+                        let row = 5
                         while (rand === 7) {
                             rand = Math.floor(Math.random() * 7);
-                            let i = boardArray[levelCounter][rand]
-                            while (i !== 0 && levelCounter > 0) {
-                                levelCounter--
-                                i = boardArray[levelCounter][rand]
-                                console.log(levelCounter)
+                            let i = boardArray[row][rand]
+                            while (i !== 0 && row > 0) {
+                                row--
+                                i = boardArray[row][rand]
+                                console.log(row)
                             } 
-                            if (boardArray[levelCounter][rand] !== 0 && levelCounter === 0) {
+                            if (boardArray[row][rand] !== 0 && row === 0) {
                                 console.log('rerun')
                                 rand = 7
-                                levelCounter = 5
+                                row = 5
                             }
                         }
-                        boardArray[levelCounter][rand] = -1
-                        let id = (levelCounter * 7) + rand;
+                        boardArray[row][rand] = -1
+                        let id = (row * 7) + rand;
     
                         position = {
                             plays: 1,
@@ -158,7 +159,7 @@ $(document).ready(function() {
                             fallingCircle.remove()
                             circle.setAttribute('taken', 2);
     
-                            if (checkWinner('yellow', id)) {
+                            if (checkWinner(boardArray, -1, row, rand)) {
                                 winnerText.textContent = 'YELLOW WINS!!!!!!!!'
                                 winnerText.style.color = 'yellow'
                                 console.log('yellow wins')
@@ -172,6 +173,14 @@ $(document).ready(function() {
                                 })
                                 game = []
                             }
+
+                            /* 
+                            // Here we are going to create the same as the one on top, but we are going to check using the 2D array
+                            if (checkWinner(boardArray, -1)) {
+                                . . . 
+                            }
+                            */
+
                             count++;
                             player *= -1;
                         }, 750 - (verticalPosition[rand] * 50)); 
@@ -269,10 +278,7 @@ $(document).ready(function() {
                 /* }, 750 - (verticalPosition[rand] * 50));  */
 
             }
-        }
-        
-            
-             
+        }             
     }
     
     // Reset the board
@@ -300,108 +306,72 @@ $(document).ready(function() {
     });
 });
 
-function checkWinner(color, id) {
-    return (horizontalDFS(color, id) || verticalDFS(color, id) || crissDFS(color, id) || crossDFS(color, id))
-}
+function checkWinner(boardArray, player, rowPosition, columnPosition) {
+    return (horizontalDFS(boardArray, player, rowPosition, columnPosition) || verticalDFS(boardArray, player, rowPosition, columnPosition) || crissDFS(boardArray, player, rowPosition, columnPosition) || crossDFS(boardArray, player, rowPosition, columnPosition))
+} 
+function horizontalDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
+    let rightValue = 0, leftValue = -1;
+    let currentRow = playedMoveRow, currentColumn = playedMoveColumn;
 
-function horizontalDFS(color, id) {
-    let rightValue = 0;
-    let leftValue = -1;
-    let modNum = id % 7
-    let max = 6 - modNum + id;
-    let min = id - modNum;
-
-    let holdId = id
-    // Check Right value
-    while (holdId <= max) {
-        let circle = document.getElementById(holdId);
-        if (circle.style.backgroundColor === color) {
-            rightValue += 1
-            holdId += 1;
+    // Check right value
+    while (currentColumn <= 6) {
+        if (boardArray[currentRow][currentColumn] === player) {
+            rightValue += 1;
+            currentColumn += 1;
         } else {
             break;
         }
     }
 
-    // Check the left Value
-    holdId = id
-    while (holdId >= min) {
-        circle = document.getElementById(holdId)
-        if (circle.style.backgroundColor === color) {
-            leftValue += 1
-            holdId -= 1;
+    currentColumn = playedMoveColumn
+    while (currentColumn >= 0) {
+        if (boardArray[currentRow][currentColumn] === player) {
+            leftValue += 1;
+            currentColumn -= 1;
         } else {
             break;
         }
     }
-
+    console.log('for horizontal for player ' + player + '. ' + (rightValue + leftValue))
     if (rightValue + leftValue >= 4) {
         return true;
     } else {
         return false
     }
 }
-
-function verticalDFS(color, id) {
+function verticalDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
     let downValue = 0;
-
-    /* while (row <= 5 && row >= 0) {
-        if (boardArray[row][col] === color) {
+    while (playedMoveRow <= 5) {
+        if (boardArray[playedMoveRow][playedMoveColumn] === player) {
             downValue += 1;
-            row += 1;
-        } else {
-            break;
+            playedMoveRow += 1
+        } else { 
+            break; 
         }
-        if (downValue >= 4) {
-            return true;
-        } else {
-            return false
-        }
-    } */
-
-    while (id <= 41) {
-        let circle = document.getElementById(id)
-        if (circle.style.backgroundColor === color) {
-            downValue += 1
-            id += 7;
-        } else {
-            break;
-        }
-    }
-
+    } 
     if (downValue >= 4) {
         return true;
     } else {
         return false
     }
 }
-
-function crissDFS(color, id) {
-    let modId =  id % 7;
-    let rightValue = -1;
-    let leftValue = 0;
-
-    let holdModId = modId;
-    let holdId = id;
-    while (holdId >= 0 && holdModId <= 6) {
-        let circle = document.getElementById(holdId);
-        if (circle.style.backgroundColor == color) {
+function crissDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
+    let currentColumn = playedMoveColumn, currentRow = playedMoveRow, rightValue = -1, leftValue = 0;
+    while (currentColumn <= 6 && currentRow <= 5) {
+        if (boardArray[currentRow][currentColumn] === player) {
             rightValue += 1;
-            holdId -= 6;
-            holdModId += 1;
+            currentRow += 1;
+            currentColumn += 1;
         } else {
             break;
         }
-    }
-
-    holdModId = modId;
-    holdId = id;
-    while (holdId <= 41 && holdModId >= 0) {
-        circle = document.getElementById(holdId)
-        if (circle.style.backgroundColor == color) {
+    } 
+    currentColumn = playedMoveColumn, currentRow = playedMoveRow;
+    while (currentColumn >= 0 && currentRow >= 0) {
+        if (boardArray[currentRow][currentColumn] === player) {
             leftValue += 1;
-            holdId += 6;
-            holdModId -= 1;
+            currentRow -= 1;
+            currentColumn -=1;
         } else {
             break;
         }
@@ -412,33 +382,24 @@ function crissDFS(color, id) {
         return false
     }
 }
-
-function crossDFS(color, id) {
-    let modId =  id % 7;
-    let rightValue = -1;
-    let leftValue = 0;
-
-    let holdModId = modId;
-    let holdId = id;
-    while (holdId <= 41 && holdModId <= 6) {
-        let circle = document.getElementById(holdId);
-        if (circle.style.backgroundColor == color) {
+function crossDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
+    let currentColumn = playedMoveColumn, currentRow = playedMoveRow, rightValue = -1, leftValue = 0;
+    while (currentColumn <= 6 && currentRow >= 0) {
+        if (boardArray[currentRow][currentColumn] === player) {
             rightValue += 1;
-            holdId += 8;
-            holdModId += 1;
+            currentRow -= 1;
+            currentColumn += 1;
         } else {
             break;
         }
     }
 
-    holdModId = modId;
-    holdId = id;
-    while (holdId >= 0 && holdModId >= 0) {
-        circle = document.getElementById(holdId)
-        if (circle.style.backgroundColor == color) {
+    currentColumn = playedMoveColumn, currentRow = playedMoveRow
+    while (currentColumn >= 0 && currentRow <= 5) {
+        if (boardArray[currentRow][currentColumn] === player) {
             leftValue += 1;
-            holdId -= 8;
-            holdModId -= 1;
+            currentRow += 1;
+            currentColumn -= 1;
         } else {
             break;
         }
@@ -448,4 +409,5 @@ function crossDFS(color, id) {
     } else {
         return false
     }
+
 }
