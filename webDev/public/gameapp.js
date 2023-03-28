@@ -5,7 +5,7 @@ $(document).ready(function() {
     let gameOver = false 
     const restart = document.querySelector('#restart')
     let winnerText = document.querySelector('#winner')
-    let count = 0;
+    let count_to_tie = 0;
     let gameHistorys = [];
     let game = [];
     let position = {}
@@ -115,9 +115,15 @@ $(document).ready(function() {
                         game = []
 
                     }
-                    count++;
+                    count_to_tie++;
+
+                    // Switching turns
                     player *= -1;
                     if (player === -1 && gameOver === false) {
+
+                        // This returns a 'suitable' move
+                        // Here the transfer would occur. I am going to change it to try and get data from a python file:
+                        
                         let rand = 7
                         let row = 5
                         while (rand === 7) {
@@ -134,8 +140,11 @@ $(document).ready(function() {
                                 row = 5
                             }
                         }
+                        
+                        
+                        sendDataToServer(boardArray)
                         boardArray[row][rand] = -1
-                        let id = (row * 7) + rand;
+                        let id = (row * 7) + rand; // getting the id value in numbers (0-41)
     
                         position = {
                             plays: 1,
@@ -181,14 +190,14 @@ $(document).ready(function() {
                             }
                             */
 
-                            count++;
+                            count_to_tie++;
                             player *= -1;
                         }, 750 - (verticalPosition[rand] * 50)); 
                     } 
                  }, 700);
                 
             }
-            if (gameOver === false && count === 42) {
+            if (gameOver === false && count_to_tie === 42) {
                 winnerText.textContent = 'DRAW!'
                 winnerText.style.color = 'white'
                 gameOver = true;
@@ -204,7 +213,7 @@ $(document).ready(function() {
             
         }); 
         if (gameOver === false) {
-            if (count === 42) {
+            if (count_to_tie === 42) {
                 winnerText.textContent = 'DRAW!'
                 winnerText.style.color = 'white'
                 gameOver = true;
@@ -232,6 +241,7 @@ $(document).ready(function() {
                         levelCounter = 5
                     }
                 }
+
                 boardArray[levelCounter][rand] = -1
                 let id = (levelCounter * 7) + rand;
                 console.log(boardArray)
@@ -273,7 +283,7 @@ $(document).ready(function() {
                         })
                         game = []
                     } */
-                    count++;
+                    count_to_tie++;
                     player *= -1;
                 /* }, 750 - (verticalPosition[rand] * 50));  */
 
@@ -291,7 +301,7 @@ $(document).ready(function() {
         }
         winnerText.textContent = ''
         winnerText.style.color = 'black'
-        count = 0;
+        count_to_tie = 0;
         player = 1;
         gameOver = false
         verticalPosition = [0, 0, 0, 0, 0, 0, 0];
@@ -332,7 +342,6 @@ function horizontalDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
             break;
         }
     }
-    console.log('for horizontal for player ' + player + '. ' + (rightValue + leftValue))
     if (rightValue + leftValue >= 4) {
         return true;
     } else {
@@ -410,4 +419,21 @@ function crossDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
         return false
     }
 
+}
+
+function sendDataToServer(data) {
+    fetch('/sendData', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({array: data}),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
