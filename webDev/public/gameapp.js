@@ -88,6 +88,10 @@ $(document).ready(function() {
                 }
                 game.push(position);
                 
+                function createFallingCirlce(col, horizontalPosition, verticalPosition, ){
+                    const dropPosition = 516
+                }
+
                 const fallingCircle = document.createElement('div');
                 fallingCircle.classList.add('fallingCircle');
                 fallingCircle.style.setProperty('left', `${horizontalPosition[col]}px`)
@@ -117,9 +121,9 @@ $(document).ready(function() {
 
                     }
                     count_to_tie++;
+                    player *= -1;
 
                     // Switching turns
-                    player *= -1;
                     if (player === -1 && gameOver === false) {
 
                         // This returns a 'suitable' move
@@ -142,65 +146,55 @@ $(document).ready(function() {
                                 row = 5
                             }
                         }
-                        
-                        /* (async () => {
-                            const changed_data = await performActions(boardArray);
-                            // ---------------EVERYTHING AFTER GOES HERE--------------------
-                        })(); */
+                    
                         
                        
                         process_data(boardArray).then((returnedData) => {
                             console.log('Returned Data:', returnedData);
-                            move = returnedData['move']
-                            boardArray[row][move] = -1
-                        let id = (row * 7) + move; // getting the id value in numbers (0-41)
-    
-                        position = {
-                            plays: 1,
-                            position: id
-                        }
-                        game.push(position);
-    
-                        let circle = document.getElementById(id.toString())
-                        // Falling circle
-                        const fallingCircle = document.createElement('div');
-                        fallingCircle.style.backgroundColor = 'yellow'
-                        fallingCircle.style.setProperty('left', `${horizontalPosition[move]}px`)
-                        fallingCircle.classList.add('fallingCircle');
-                        fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[move] * 85}px`);
-                        verticalPosition[move] += 1;
-                        hover_grid.appendChild(fallingCircle);
-                        fallingCircle.classList.add('fall');
-                        setTimeout(() => {
-                            circle.style.backgroundColor = 'yellow';
-                            fallingCircle.remove()
-                            circle.setAttribute('taken', 2);
-    
-                            if (checkWinner(boardArray, -1, row, move)) {
-                                winnerText.textContent = 'YELLOW WINS!!!!!!!!'
-                                winnerText.style.color = 'yellow'
-                                console.log('yellow wins')
-                                gameOver = true;
-    
-                                //Save data of game
-                                gameHistorys.push({
-                                    id: Math.random(),
-                                    winner: 1,
-                                    game: game
-                                })
-                                game = []
+                            row = returnedData['row']
+                            const col = returnedData['col']
+                            boardArray[row][col] = -1
+                            let id = (row * 7) + col; // getting the id value in numbers (0-41)
+        
+                            position = {
+                                plays: 1,
+                                position: id
                             }
+                            game.push(position);
+        
+                            let circle = document.getElementById(id.toString())
+                            // Falling circle
+                            const fallingCircle = document.createElement('div');
+                            fallingCircle.style.backgroundColor = 'yellow'
+                            fallingCircle.style.setProperty('left', `${horizontalPosition[col]}px`)
+                            fallingCircle.classList.add('fallingCircle');
+                            fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[col] * 85}px`);
+                            verticalPosition[col] += 1;
+                            hover_grid.appendChild(fallingCircle);
+                            fallingCircle.classList.add('fall');
+                            setTimeout(() => {
+                                circle.style.backgroundColor = 'yellow';
+                                fallingCircle.remove()
+                                circle.setAttribute('taken', 2);
+        
+                                if (checkWinner(boardArray, -1, row, col)) {
+                                    winnerText.textContent = 'YELLOW WINS!!!!!!!!'
+                                    winnerText.style.color = 'yellow'
+                                    console.log('yellow wins')
+                                    gameOver = true;
+        
+                                    //Save data of game
+                                    gameHistorys.push({
+                                        id: Math.random(),
+                                        winner: 1,
+                                        game: game
+                                    })
+                                    game = []
+                                }
 
-                            /* 
-                            // Here we are going to create the same as the one on top, but we are going to check using the 2D array
-                            if (checkWinner(boardArray, -1)) {
-                                . . . 
-                            }
-                            */
-
-                            count_to_tie++;
-                            player *= -1;
-                        }, 750 - (verticalPosition[move] * 50)); 
+                                count_to_tie++;
+                                player *= -1;
+                            }, 750 - (verticalPosition[col] * 50)); 
                         });
                         
                         

@@ -4,11 +4,22 @@ import requests
 import random
 
 def random_move(board_array):
+    row = 5
     while (True):
         rand = random.randint(0, 6)
-        if (board_array[0][rand] == 0):
-            return rand
-    return None
+        chip_value = board_array[row][rand]
+        while (chip_value != 0 and row > 0):
+            row -= 1
+            chip_value = board_array[row][rand]
+        if (board_array[row][rand] != 0 and row == 0):
+            row = 5
+        else:
+            move = {
+                'row': row,
+                'col': rand
+            }
+            return move
+            
 
 """ # We do argv[1] because on the server side, we sent the data as: ['./trasnfer.py', JSON.stringify(board_data)] 
 json_data = sys.argv[1]
@@ -36,9 +47,7 @@ parsed_data = json.loads(data)['array']
 
 # Manipulate the data
 move = random_move(parsed_data)
-changed_data = {
-    'move': move
-}
+changed_data = move
 
 # Convert the manipulated data to JSON format
 json_output = json.dumps(changed_data)
