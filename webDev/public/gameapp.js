@@ -28,7 +28,8 @@ $(document).ready(function() {
         circle.setAttribute('taken', 0);
         countId++;
         
-        
+
+
         circle.addEventListener('mouseover', function() {
             if (gameOver === false) {
                 circle.style.cursor = 'pointer';
@@ -124,6 +125,7 @@ $(document).ready(function() {
                         // This returns a 'suitable' move
                         // Here the transfer would occur. I am going to change it to try and get data from a python file:
                         
+                        
                         let rand = 7
                         let row = 5
                         while (rand === 7) {
@@ -141,10 +143,17 @@ $(document).ready(function() {
                             }
                         }
                         
+                        /* (async () => {
+                            const changed_data = await performActions(boardArray);
+                            // ---------------EVERYTHING AFTER GOES HERE--------------------
+                        })(); */
                         
-                        sendDataToServer(boardArray)
-                        boardArray[row][rand] = -1
-                        let id = (row * 7) + rand; // getting the id value in numbers (0-41)
+                       
+                        process_data(boardArray).then((returnedData) => {
+                            console.log('Returned Data:', returnedData);
+                            move = returnedData['move']
+                            boardArray[row][move] = -1
+                        let id = (row * 7) + move; // getting the id value in numbers (0-41)
     
                         position = {
                             plays: 1,
@@ -152,6 +161,58 @@ $(document).ready(function() {
                         }
                         game.push(position);
     
+                        let circle = document.getElementById(id.toString())
+                        // Falling circle
+                        const fallingCircle = document.createElement('div');
+                        fallingCircle.style.backgroundColor = 'yellow'
+                        fallingCircle.style.setProperty('left', `${horizontalPosition[move]}px`)
+                        fallingCircle.classList.add('fallingCircle');
+                        fallingCircle.style.setProperty('--drop-position', `${dropPosition - verticalPosition[move] * 85}px`);
+                        verticalPosition[move] += 1;
+                        hover_grid.appendChild(fallingCircle);
+                        fallingCircle.classList.add('fall');
+                        setTimeout(() => {
+                            circle.style.backgroundColor = 'yellow';
+                            fallingCircle.remove()
+                            circle.setAttribute('taken', 2);
+    
+                            if (checkWinner(boardArray, -1, row, move)) {
+                                winnerText.textContent = 'YELLOW WINS!!!!!!!!'
+                                winnerText.style.color = 'yellow'
+                                console.log('yellow wins')
+                                gameOver = true;
+    
+                                //Save data of game
+                                gameHistorys.push({
+                                    id: Math.random(),
+                                    winner: 1,
+                                    game: game
+                                })
+                                game = []
+                            }
+
+                            /* 
+                            // Here we are going to create the same as the one on top, but we are going to check using the 2D array
+                            if (checkWinner(boardArray, -1)) {
+                                . . . 
+                            }
+                            */
+
+                            count_to_tie++;
+                            player *= -1;
+                        }, 750 - (verticalPosition[move] * 50)); 
+                        });
+                        
+                        
+
+                        /* boardArray[row][rand] = -1
+                        let id = (row * 7) + rand; // getting the id value in numbers (0-41)
+    
+                        position = {
+                            plays: 1,
+                            position: id
+                        }
+                        game.push(position);
     
                         let circle = document.getElementById(id.toString())
                         // Falling circle
@@ -188,11 +249,11 @@ $(document).ready(function() {
                             if (checkWinner(boardArray, -1)) {
                                 . . . 
                             }
-                            */
+                            
 
                             count_to_tie++;
                             player *= -1;
-                        }, 750 - (verticalPosition[rand] * 50)); 
+                        }, 750 - (verticalPosition[rand] * 50));  */
                     } 
                  }, 700);
                 
@@ -421,7 +482,30 @@ function crossDFS(boardArray, player, playedMoveRow, playedMoveColumn) {
 
 }
 
-function sendDataToServer(data) {
+
+async function process_data(data) {
+    try {
+        const response = await fetch('/process-data', {
+            method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+        });
+        const result = await response.json();
+        console.log(result);
+
+        return result;
+    } catch(error) {
+        console.log('Error:', error);
+        return null
+    }
+}
+
+
+
+
+/* function sendDataToServer(data) {
     fetch('/sendData', {
         method: 'POST',
         headers: {
@@ -437,3 +521,17 @@ function sendDataToServer(data) {
         console.error('Error:', error);
     });
 }
+
+function requestDataFromServer() {
+    fetch('/move', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+    })
+    .then(res => res.json())
+    .then(changed_data => console.log(`THIS IS THE MOVE FROM THE SERVER ${changed_data}`))
+    .catch(err => console.log(err))
+    
+} */
