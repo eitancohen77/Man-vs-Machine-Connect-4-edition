@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 let changed_data = []
-
+let gameLog = []
 
 app.get('/connect4', (req, res) => {
     res.render('home')
@@ -30,31 +30,18 @@ app.get('/connect4/bot', (req, res) => {
     res.render('stats')
 })
 
-
-
-// With sendData we get the data from the client side
-app.post('/sendData', (req, res) => {
-    const board_data = req.body;
-    // We then use pythonProcess to process this data to the transfer.py file and we send board_data
-    const pythonProcess = spawn('python3', ['./trasnfer.py', JSON.stringify({'array': board_data})]);
-
-    pythonProcess.stdout.on('data', (data) => {
-        console.log(`Python script output: ${data}`);
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`Python script error: ${data}`);
-    });
-
-    pythonProcess.on('close', (code) => {
-        console.log(`Python script exited with code ${code}`);
-        res.json({ message: 'Data received' });
-    });
+app.post('/sendGameHistory', (req, res) => {
+    const gameHistory = req.body;
+    console.log(gameHistory)
+    gameLog.push(gameHistory)
 })
 
+// With process-data we get the data from the client side, send it to a python file
+// have python run calculations on that data and send back what it thinks to the server
+// (this file), which will then send it back to the original javascript file all in one request
 app.post('/process-data', (req, res) => {
     const board_data = req.body;
-    // Pass the data to a Python scr'array'tdin.end();
+    // Here we are telling it to send the json data to transfer.py, 
     const pythonProcess = spawn('python3', ['./trasnfer.py', JSON.stringify({'array': board_data})]);
     
     pythonProcess.stdout.on('data', output => {
@@ -67,22 +54,9 @@ app.post('/process-data', (req, res) => {
         // Handle errors
         console.error('Python script error:', error.toString());
         res.status(500).send('An error occurred while processing the data.');
-        });
-  });
-
-// For this we are going to need a middleware to parse this python data. So we use body-parser
-app.post('/receiveManipulatedData', (req, res) => {
-    const manipulatedData = req.body;
-
-    // Storing the data inside a global variable that way I can send it to a different request
-    changed_data.push(manipulatedData)
-    console.log('From the server side recieved from python file: ' + JSON.stringify(changed_data, null, 2));
-    res.send('Data from python recieved')
+    });
 });
-app.get('/move', (req, res) => {
-    console.log(`FROM THE SERVER ${changed_data}`)
-    res.json(changed_data.pop())
-})
+
 app.listen(3000, () => {
     console.log('Serving on Port 3000')
 })
