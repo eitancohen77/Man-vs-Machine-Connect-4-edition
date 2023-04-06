@@ -15,7 +15,6 @@ app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-let changed_data = []
 let gameLog = []
 
 app.get('/connect4', (req, res) => {
@@ -23,7 +22,7 @@ app.get('/connect4', (req, res) => {
 })
 
 app.get('/connect4/play', (req, res) => {
-    res.render('game/game')
+    res.render('game')
 })
 
 app.get('/connect4/bot', (req, res) => {
@@ -32,8 +31,8 @@ app.get('/connect4/bot', (req, res) => {
 
 app.post('/sendGameHistory', (req, res) => {
     const gameHistory = req.body;
-    console.log(gameHistory)
     gameLog.push(gameHistory)
+    console.log(gameHistory)
 })
 
 // With process-data we get the data from the client side, send it to a python file

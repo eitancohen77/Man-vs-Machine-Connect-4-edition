@@ -34,3 +34,7 @@ function removeHighlight() {
     document.querySelector('.col > .para').classList.remove('highlight');
 
 }
+
+document.querySelector('.card').addEventListener('mouseleave', function() {
+    removeHighlight();
+  });
