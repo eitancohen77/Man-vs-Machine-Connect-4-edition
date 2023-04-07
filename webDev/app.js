@@ -34,8 +34,9 @@ app.get('/connect4/play', (req, res) => {
     res.render('game')
 })
 
-app.get('/connect4/bot', (req, res) => {
-    res.render('stats')
+app.get('/connect4/bot', async(req, res) => {
+    const players = await Player.find({});
+    res.render('stats', { players })
 })
 
 app.post('/sendGameHistory', async(req, res) => {

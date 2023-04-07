@@ -96,7 +96,7 @@ $(document).ready(function() {
                         gameOver = displayWinner('red', winnerText)
                         gameHistory = {
                             id: Math.random(),
-                            winner: player,
+                            winner: 1,
                             game: game
                         }
                         game = []
@@ -131,9 +131,10 @@ $(document).ready(function() {
                                 
                                 if (checkWinner(boardArray, player, row, col)) {
                                     gameOver = displayWinner('yellow', winnerText)
+                                    console.log('Yellow' + player)
                                     gameHistory = {
                                         id: Math.random(),
-                                        winner: player,
+                                        winner: -1,
                                         game: game
                                     }
                                     game = []
