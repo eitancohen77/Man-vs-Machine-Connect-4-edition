@@ -4,7 +4,16 @@ const path = require('path');
 const ejsMate = require('ejs-mate')
 const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Player = require('./models/players')
 
+
+mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "CONNECTION ERROR"));
+db.once("open", () => {
+    console.log("CONNECTION OPEN")
+})
 
 app.engine('ejs', ejsMate);
 app.set('views', path.join(__dirname, 'views'));
@@ -29,10 +38,10 @@ app.get('/connect4/bot', (req, res) => {
     res.render('stats')
 })
 
-app.post('/sendGameHistory', (req, res) => {
-    const gameHistory = req.body;
-    gameLog.push(gameHistory)
-    console.log(gameHistory)
+app.post('/sendGameHistory', async(req, res) => {
+    const playerInfo = new Player(req.body);
+    await playerInfo.save()
+    console.log(playerInfo)
 })
 
 // With process-data we get the data from the client side, send it to a python file
