@@ -1,3 +1,4 @@
+const cards = document.querySelectorAll('.card')
 
 document.querySelector('.card1').addEventListener('mouseover', function() {
     const para = document.querySelector('.para');
@@ -34,3 +35,10 @@ function removeHighlight() {
     document.querySelector('.col > .para').classList.remove('highlight');
 
 }
+cards.forEach(card => {
+    card.addEventListener('mouseleave', function() {
+        const para = document.querySelector('.para');
+        para.classList.remove('highlight')
+
+    })
+});

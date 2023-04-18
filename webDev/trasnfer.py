@@ -1,6 +1,5 @@
 import sys
 import json
-import requests
 import random
 
 def random_move(board_array):

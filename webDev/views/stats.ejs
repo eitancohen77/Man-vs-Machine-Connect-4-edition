@@ -7,7 +7,24 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>You are 0 - 41 with this bot</h1>
+    <% let countWins = 0 %>
+    <% let totalgames = 0 %>
+    <% for (let p of players) { %>
+        <% if (p.winner == 1) { %>
+            <% countWins++ %>
+            <% totalgames++ %>
+        <% } else { %>
+            <% totalgames++ %>
+        <% } %>
+    <% } %>
+
+    <h1>You are <%=countWins%>:<%=totalgames%> with this bot</h1>
+    <% for (let p of players) { %>
+        <h5>Player <%=p.winner%> is the winner</h5>
+        <% for (let g of p.game) { %>
+            <p>Player <%=g.plays%> played position <%=g.position%></p>
+        <% } %>
+    <% } %> 
     <a href="/connect4">Back to Homepage</a>
 </body>
 </html>
