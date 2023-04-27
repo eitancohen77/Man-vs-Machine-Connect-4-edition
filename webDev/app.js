@@ -70,6 +70,11 @@ app.post('/login', async(req, res) => {
     }
 })
 
+app.post('/logout', (req, res) => {
+    req.session.user_id = null;
+    res.redirect('/connect4')
+})
+
 app.get('/secret', (req, res) => {
     if (req.session.user_id) { // If they are logged in:
         res.send('THIS IS SECRET YOU CANNOT SEE ME')
