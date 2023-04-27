@@ -6,6 +6,8 @@ const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Player = require('./models/players')
+const bcrypt = require('bcrypt');
+const session = require('express-session');
 
 
 mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
@@ -23,26 +25,79 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: false}
+app.use(session( sessionOptions));
 
-let gameLog = []
+const requireLogin = (req, res, next) => {
+    if (!req.session.user_id) { 
+        return res.redirect('/login')// If they are not logged in it will redirect them to the logged in page:
+    }
+    next();// If they are logged in:
+}
 
-app.get('/connect4', (req, res) => {
+app.get('/register', (req, res) => {
+    res.render('register')
+})
+
+app.post('/register', async(req, res) => {
+    const {password, username} = req.body
+    const hash = await bcrypt.hash(password, 12);
+    const user = new Player ({
+        username,
+        password: hash
+    })
+    await user.save()
+    res.redirect('/login')
+})
+
+app.get('/connect4', requireLogin, (req, res) => {
     res.render('home')
 })
 
-app.get('/connect4/play', (req, res) => {
+app.get('/login', (req, res) => {
+    res.render('login')
+})
+
+app.post('/login', async(req, res) => {
+    const { username, password } = req.body
+    const user = await Player.findOne({ username })
+    const validPassword = await bcrypt.compare(password, user.password)
+    if (validPassword) { // Checks if it exisits
+        req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
+        res.redirect('/connect4')
+    } else {
+        res.send("Password or Username Incorrect")
+    }
+})
+
+app.get('/secret', (req, res) => {
+    if (req.session.user_id) { // If they are logged in:
+        res.send('THIS IS SECRET YOU CANNOT SEE ME')
+    } else { // otherwise they are not logged in and I will redirect them to the logged in page:
+        res.send('Sorry. login first to see the secret')
+    }
+})
+
+
+app.get('/connect4/play', requireLogin, (req, res) => {
     res.render('game')
 })
 
-app.get('/connect4/bot', async(req, res) => {
-    const players = await Player.find({});
-    res.render('stats', { players })
+app.get('/connect4/bot', requireLogin, async(req, res) => {
+    const user = await Player.findById({_id: req.session.user_id});
+    const { stats } = user;
+    res.render('botStats', { stats })
+})
+
+app.get('/connect4/stats', requireLogin, async(req, res) => {
+    const players = await Player.findById({_id: req.session.user_id});
+    const { stats } = players
+    res.render('stats', { stats })
 })
 
 app.post('/sendGameHistory', async(req, res) => {
-    const playerInfo = new Player(req.body);
-    await playerInfo.save()
-    console.log(playerInfo)
+    const user = await Player.updateOne({_id: req.session.user_id}, { $push: {stats: req.body }})
+    console.log(user)
 })
 
 // With process-data we get the data from the client side, send it to a python file

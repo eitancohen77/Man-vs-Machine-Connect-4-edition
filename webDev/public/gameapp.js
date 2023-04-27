@@ -7,7 +7,7 @@ $(document).ready(function() {
     let winnerText = document.querySelector('#winner')
     let count_to_tie = 0;
     let gameHistorys = [];
-    let game = [];
+    let moves = [];
     let position = {}
     const horizontalPosition = [43, 127, 212, 297, 382, 467, 552];
     let verticalPosition = [0, 0, 0, 0, 0, 0, 0];
@@ -83,7 +83,7 @@ $(document).ready(function() {
                     plays: 1,
                     position: id
                 }
-                game.push(position);
+                moves.push(position);
                 
 
                 const fallingCircle = createFallingCirlce(col, horizontalPosition, verticalPosition, 'red')
@@ -97,9 +97,9 @@ $(document).ready(function() {
                         gameHistory = {
                             id: Math.random(),
                             winner: 1,
-                            game: game
+                            moves: moves
                         }
-                        game = []
+                        moves = []
                         sendGameHistoryToServer(gameHistory)
 
                     }
@@ -119,7 +119,7 @@ $(document).ready(function() {
                                 plays: player,
                                 position: id
                             }
-                            game.push(position);
+                            moves.push(position);
         
                             let circle = document.getElementById(id.toString())
                             // Falling circle
@@ -135,9 +135,9 @@ $(document).ready(function() {
                                     gameHistory = {
                                         id: Math.random(),
                                         winner: -1,
-                                        game: game
+                                        moves: moves
                                     }
-                                    game = []
+                                    moves = []
                                     sendGameHistoryToServer(gameHistory)
 
                                 }
@@ -153,10 +153,10 @@ $(document).ready(function() {
                                     gameHistorys.push({
                                         id: Math.random(),
                                         winner: 0,
-                                        game: game
+                                        moves: moves
                                     })
                                     sendGameHistoryToServer(gameHistory)
-                                    game = []
+                                    moves = []
                                 } 
                             }, 750 - (verticalPosition[col] * 50)); 
                         });
