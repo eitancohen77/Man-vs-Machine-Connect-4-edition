@@ -18,7 +18,13 @@
         <% } %>
     <% } %>
 
-    <h1>Total Games played <%= totalgames %>. Your total amount of wins: <%= countWins %>. Your total amount of losses: <%= totalgames - countWins %></h1>
-    <a href="/connect4/bot">To further see each game move</a>
+    <h1>You are <%=countWins%>:<%=totalgames%> with this bot</h1>
+    <% for (let p of players) { %>
+        <h5>Player <%=p.winner%> is the winner</h5>
+        <% for (let g of p.game) { %>
+            <p>Player <%=g.plays%> played position <%=g.position%></p>
+        <% } %>
+    <% } %> 
+    <a href="/connect4">Back to Homepage</a>
 </body>
 </html>

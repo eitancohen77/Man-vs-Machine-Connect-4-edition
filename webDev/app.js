@@ -36,6 +36,11 @@ app.get('/connect4/play', (req, res) => {
 
 app.get('/connect4/bot', async(req, res) => {
     const players = await Player.find({});
+    res.render('botStats', { players })
+})
+
+app.get('/connect4/stats', async(req, res) => {
+    const players = await Player.find({});
     res.render('stats', { players })
 })
 
