@@ -22,10 +22,20 @@
     <%- include('partials/navbar') -%>
     <h1>You are <%=countWins%>:<%=totalgames%> with this bot</h1>
     <% for (let p of stats) { %>
-        <h5 id="displayWinner">Player <%=p.winner%> is the winner</h5>
-        <% for (let g of p.moves) { %>
-            <p class="move">Player <%=g.plays%> played position <%=g.position%></p>
-        <% } %>
+        <% if (p.winner == 1) { %>
+        
+           <h5 id="displayWinner">You Won</h5>
+            <% } else { %>
+                <h5 id="displayWinner">Baby Bot Won</h5>
+            <% } %>
+            <% for (let g of p.moves) { %>
+                <% if (g.plays == 1) { %>
+                    <p class="move">You played position <%=g.position%></p>
+                <% } else { %>
+                    <p class="move">Baby Bot played position <%=g.position%></p>
+                <% } %>
+                <% } %> 
     <% } %> 
+    
 </body>
 </html>
