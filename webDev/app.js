@@ -50,7 +50,7 @@ app.post('/register', async(req, res) => {
     res.redirect('/login')
 })
 
-app.get('/connect4', requireLogin, (req, res) => {
+app.get('/connect4', (req, res) => {
     res.render('home')
 })
 

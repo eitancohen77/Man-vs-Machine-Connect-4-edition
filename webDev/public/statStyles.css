@@ -1,0 +1,19 @@
+.boxGrid {
+    display: flex;
+    flex-direction: row;
+}
+
+.botName {
+    width: 100px;
+    height: 100px;
+    background-color: lightblue;
+    margin-left: 100px;
+}
+
+.stats {
+    width: 100px;
+    height: 100px;
+    background-color: lightcoral;
+    margin-left: 200px;
+}
+

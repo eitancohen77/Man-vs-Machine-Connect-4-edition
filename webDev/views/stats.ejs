@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+
     <title>Document</title>
 </head>
 <body>
@@ -17,7 +19,14 @@
             <% totalgames++ %>
         <% } %>
     <% } %>
-    <h1>Total games played: <%= totalgames %>. Your total amount of wins: <%= countWins %>. Your total amount of losses: <%= totalgames - countWins%></h1>
-    <a href="/connect4/bot">To further see each game move</a>
+
+    <%- include('partials/navbar') -%>
+    <div class="boxGrid">
+        <div class="botName">Baby Bot</div>
+        <div class="stats">
+            <div class="statsNumerical;">Win - Loss ratio: <%= countWins %> - <%= totalgames - countWins %> </div>
+            <a href="/connect4/bot">View all games</a>
+        </div>
+    </div>
 </body>
 </html>
