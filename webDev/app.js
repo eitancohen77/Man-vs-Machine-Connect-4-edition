@@ -64,7 +64,7 @@ app.post('/login', async(req, res) => {
     const validPassword = await bcrypt.compare(password, user.password)
     if (validPassword) { // Checks if it exisits
         req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
-        res.redirect('/connect4')
+        res.redirect('/connect4/bot')
     } else {
         res.send("Password or Username Incorrect")
     }

@@ -359,6 +359,43 @@ nav ul li a {
     text-align: center;
 }
 
+.winner {
+    color: white;
+    font-size: 20px;
+    text-align: center;
+}
+
+
+.gameContainer {
+    display:flex;
+    width: 350px;
+    height: 300px;
+    background: blue;
+    flex-wrap: wrap;
+}
+
+.circlePosition {
+    width: 50px;
+    height: 50px;
+    border-radius: 0px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+#forward {
+    color: white;
+    font-size: 30px;
+}
+#backward {
+    color: white;
+    font-size: 30px;
+}
+
+#gameNumber {
+    font-size: 30px;
+    color: white;
+}
+
 /* ---------------------Login/Register-------------------------- */
 
 #loginBox {
