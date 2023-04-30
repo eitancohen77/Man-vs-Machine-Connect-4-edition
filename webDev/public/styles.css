@@ -56,12 +56,19 @@ body {
     box-sizing: border-box;
 }
 
-#winner {
+.displayGameWinner {
+    position: relative;
+    top: -400px;
+    left: 570px;
     text-align: center;
-    background-color: black;
+    background-color: rgb(0, 0, 0, 0.7);
+    width: 550px;
+    height: 100px;
+    font-size: 75px;
+    transition: 0.5s
 }
 
-#restart {
+    #restart {
     display: block;
     margin: auto;
 }
@@ -73,6 +80,7 @@ body {
     border: 1px solid rgb(59, 183, 255);
     margin: 5px;
 }
+
 
 
 @keyframes fall {
@@ -94,8 +102,21 @@ body {
     display: flex;
     flex-direction: column;
     margin-left: 100px;
+    align-items: center;
 }
+
+#username {
+    color: white;
+    font-size: 25px;
+}
+
+#bot_name {
+    color:white;
+    font-size: 25px;
+}
+
 .bot_info {
+    align-items: center;
     display: flex;
     flex-direction: column;
     margin-right: 100px;
@@ -105,11 +126,17 @@ body {
     width: 200px;
     height: 200px;
     background-color: red;
+    border-radius: 15px;
 }
 #player2 {
     width: 200px;
     height: 200px;
-    background-color: yellow;
+    background-image: url(/images/babyImage.png);
+    background-color: rgb(0, 0, 0, 0.2);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    border-radius: 15px;
 }
 
 
@@ -178,16 +205,16 @@ nav ul li a {
     cursor: pointer;
 }
 
+#siteHeader {
+    font-size: 80px;
+    color:white;
+}
+
 .row {
+    margin-top: 50px;
     display: flex;
     height: 88%;
     align-items: center;
-}
-
-h1 {
-    color: white;
-    font-size: 100px;
-    text-align: center;
 }
 
 .para {
@@ -228,30 +255,37 @@ h1 {
 
 
 .card1 {
-    background-color: white;
+    background-color: rgba(111, 245, 245, 0.6);
     background-image: url(images/babyImage.png);
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
 }
 .card2 {
-    background-image: url(images/baby.png);
+    background-color: rgba(111, 245, 245, 0.6);
+    background-image: url(images/begginer.png);
+    background-repeat: no-repeat;
     background-size: contain;
+    background-position: center;
 }
 .card3 {
-    background-image: url(images/baby.png);
+    background-color: aqua;
+    background-image: url(images/babyImage.png);
     background-size: contain;
 }
 .card4 {
-    background-image: url(images/baby.png);
+    background-color: rgba(111, 245, 245, 0.6);
+    background-image: url(images/babyImage.png);
     background-size: contain;
 }
 .card5 {
-    background-image: url(images/baby.png);
+    background-color: aqua;
+    background-image: url(images/babyImage.png);
     background-size: contain;
 }
 .card6 {
-    background-image: url(images/baby.png);
+    background-color: aqua;
+    background-image: url(images/babyImage.png);
     background-size: contain;
 }
 
@@ -319,7 +353,11 @@ h1 {
 
 /* ---------------------Specific game stat---------------------- */
 
-
+#statHeader {
+    color: white;
+    font-size: 50px;
+    text-align: center;
+}
 
 /* ---------------------Login/Register-------------------------- */
 

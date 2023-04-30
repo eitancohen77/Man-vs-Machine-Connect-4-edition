@@ -20,7 +20,7 @@
     <% } %>
     
     <%- include('partials/navbar') -%>
-    <h1>You are <%=countWins%>:<%=totalgames%> with this bot</h1>
+    <h1 id="statHeader">You are <%=countWins%>:<%=totalgames%> with this bot</h1>
     <% for (let p of stats) { %>
         <% if (p.winner == 1) { %>
         

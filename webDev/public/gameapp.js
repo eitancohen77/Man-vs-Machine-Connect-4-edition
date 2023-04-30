@@ -329,8 +329,9 @@ function createFallingCirlce(col, horizontalPosition, verticalPosition, color){
     return fallingCircle
 }
 function displayWinner(playerColor, winnerText) {
-    winnerText.textContent = `${playerColor} WINS!!!!!!!!`
+    winnerText.textContent = `${playerColor} WINS`
     winnerText.style.color = playerColor
+    winnerText.classList.add('displayGameWinner')
     console.log(`${playerColor} wins`)
     return true
 }

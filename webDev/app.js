@@ -84,8 +84,10 @@ app.get('/secret', (req, res) => {
 })
 
 
-app.get('/connect4/play', requireLogin, (req, res) => {
-    res.render('game')
+app.get('/connect4/play', requireLogin, async(req, res) => {
+    const user = await Player.findById({_id: req.session.user_id});
+    const { username } = user
+    res.render('game', {username})
 })
 
 app.get('/connect4/bot', requireLogin, async(req, res) => {
