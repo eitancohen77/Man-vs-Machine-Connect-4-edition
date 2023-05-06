@@ -62,9 +62,12 @@ app.post('/login', async(req, res) => {
     const { username, password } = req.body
     const user = await Player.findOne({ username })
     const validPassword = await bcrypt.compare(password, user.password)
+    if (!req.session.playerColor) {
+        req.session.playerColor = 'red'
+    }
     if (validPassword) { // Checks if it exisits
         req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
-        res.redirect('/connect4/bot')
+        res.redirect('/connect4/customization')
     } else {
         res.send("Password or Username Incorrect")
     }
@@ -100,6 +103,17 @@ app.get('/connect4/stats', requireLogin, async(req, res) => {
     const players = await Player.findById({_id: req.session.user_id});
     const { stats } = players
     res.render('stats', { stats })
+})
+
+app.get('/connect4/customization', requireLogin, async(req, res) => {
+    const color = req.session.playerColor;
+    res.render('customization', { color })
+})
+
+app.post('/customize', (req, res) => {
+    const { color } = req.body
+    req.session.playerColor = color
+    res.redirect('/connect4')
 })
 
 app.post('/sendGameHistory', async(req, res) => {
