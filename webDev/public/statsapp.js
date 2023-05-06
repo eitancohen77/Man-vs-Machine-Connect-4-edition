@@ -5,8 +5,14 @@ function createLogic(data, game) {
     let backward = document.getElementById(`backward${game}`);
     backward.style.display = 'block'
     let displayGame = document.getElementById('displayGame');
-    displayGame.appendChild(forward) 
-    displayGame.appendChild(backward) 
+    let moveSet = document.createElement('div');
+    moveSet.classList.add('moveSet')
+    moveSet.appendChild(backward) 
+    moveSet.appendChild(forward)
+    displayGame.appendChild(moveSet) 
+    let gameNumber = document.getElementById('gameNumber')
+    gameNumber.textContent = `Game Number ${game + 1}`
+    gameNumber.style.display = 'block'
 }
 
 function createBoard() {

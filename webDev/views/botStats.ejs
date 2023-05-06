@@ -25,14 +25,13 @@
     <% let count = 0 %>
 
     <div id="gameEnvironment">
+        <div  id="gameNumber">Game Number ${game}</div>
         <div id="displayGame"></div>
     </div>
     
     <div id="pickGames">
-
         <% for (let p of stats) { %>
             <div class="game" onclick="createLogic(<%= JSON.stringify(stats)%>, <%=game%>)"><%=game + 1%>
-                <div onclick="createEnvironment()" id="gameNumber"></div>
                 <% if (p.winner == 1) { %>
                     <div>You Won</div>
                 <% } else { %>

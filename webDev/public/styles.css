@@ -365,6 +365,12 @@ nav ul li a {
     text-align: center;
 }
 
+#gameEnvironment {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 #displayGame {
     display:flex;
     align-items: center;
@@ -388,6 +394,12 @@ nav ul li a {
     border-radius: 30px;
 }
 
+#gameNumber {
+    font-size: 70px;
+    color: white;
+    display: none;
+}
+
 .gameMove {
     display: none;
     color: white;
@@ -396,6 +408,12 @@ nav ul li a {
 
 .gameMove:hover {
     cursor: pointer;
+}
+
+.moveSet {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
 #forward {
