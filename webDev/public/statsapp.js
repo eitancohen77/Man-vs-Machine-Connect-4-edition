@@ -1,10 +1,20 @@
+function createLogic(data, game) {
+    createEnvironment()
+    let forward = document.getElementById(`forward${game}`);
+    forward.style.display = 'block'
+    let backward = document.getElementById(`backward${game}`);
+    backward.style.display = 'block'
+    let displayGame = document.getElementById('displayGame');
+    displayGame.appendChild(forward) 
+    displayGame.appendChild(backward) 
+}
+
 function createBoard() {
     let gameContainer = document.createElement('div');
     gameContainer.classList.add('gameContainer')
     gameContainer.setAttribute('id', 'gameContainer');
     let displayGame = document.getElementById('displayGame'); 
     for (let i = 0; i < 42; i++) {
-        console.log(i)
         let circle = document.createElement('div');
         circle.classList.add('circlePosition')
         circle.setAttribute('id', i.toString());
@@ -14,9 +24,13 @@ function createBoard() {
 } 
 
 function deleteBoard() {
-    let gameContainer = document.getElementById('gameContainer');
-    gameContainer.remove();
     document.getElementById('moveCounter').textContent = 0
+    let moves = document.getElementsByClassName('gameMove')
+    for (let i = 0; i < moves.length; i++) {
+        moves[i].style.display = 'none'
+    }
+    let gameContainer = document.getElementById('gameContainer');
+    gameContainer.remove(); 
 }
 
 function createEnvironment() {
@@ -24,13 +38,15 @@ function createEnvironment() {
     if (displayGame.childElementCount == 0) {
         createBoard();
     } else {
-       deleteBoard();
+        deleteBoard();
         createBoard(); 
     }
 }
 
 function forwardMove(data, game) {
     let moveCount = parseInt(document.getElementById('moveCounter').textContent);   
+    // Takes in the value of which game to register, and creates a forward function
+    // for said game.
     const gameOne = data[game]
     if (moveCount < gameOne.moves.length) {
         const position = gameOne.moves[moveCount].position
@@ -70,3 +86,5 @@ function backwardMove(data, game) {
         container.appendChild(winner)
     }     */
 }
+
+const forward = document.getElementById('forward')

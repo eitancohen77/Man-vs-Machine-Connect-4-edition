@@ -365,21 +365,37 @@ nav ul li a {
     text-align: center;
 }
 
+#displayGame {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 40px;
+}
 
 .gameContainer {
     display:flex;
-    width: 350px;
-    height: 300px;
+    width: 420px;
+    height: 360px;
     background: blue;
     flex-wrap: wrap;
 }
 
 .circlePosition {
-    width: 50px;
-    height: 50px;
-    border-radius: 0px;
+    width: 60px;
+    height: 60px;
     background-color: white;
-    border-radius: 25px;
+    border-radius: 30px;
+}
+
+.gameMove {
+    display: none;
+    color: white;
+    font-size: 30px;
+}
+
+.gameMove:hover {
+    cursor: pointer;
 }
 
 #forward {
@@ -391,9 +407,24 @@ nav ul li a {
     font-size: 30px;
 }
 
-#gameNumber {
+#pickGames {
+    display:flex;
+    margin: 20px 100px 0px 100px;
+    flex-wrap: wrap;
+}
+
+.game {
+    margin:10px;
+    text-align: center;
     font-size: 30px;
     color: white;
+    width: 150px;
+    height: 100px;
+    background-color: aqua;
+    border-radius: 15px;
+}
+.game:hover {
+    cursor: pointer;
 }
 
 /* ---------------------Login/Register-------------------------- */
