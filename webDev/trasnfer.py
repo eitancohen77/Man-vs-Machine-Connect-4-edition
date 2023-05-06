@@ -1,6 +1,9 @@
 import sys
 import json
 import random
+#import tensorflow as stf
+#import numpy as np
+
 
 def random_move(board_array):
     row = 5
