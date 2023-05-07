@@ -92,8 +92,8 @@ app.get('/secret', (req, res) => {
 app.get('/connect4/play', requireLogin, async(req, res) => {
     const user = await Player.findById({_id: req.session.user_id});
     const { username } = user
-    const { playerColor } = req.cookies
-    res.render('game', {username, playerColor})
+    const { playerColor, opponentColor } = req.cookies
+    res.render('game', {username, playerColor, opponentColor})
 })
 
 app.get('/connect4/bot', requireLogin, async(req, res) => {
@@ -110,19 +110,23 @@ app.get('/connect4/stats', requireLogin, async(req, res) => {
 
 app.get('/connect4/customization', requireLogin, (req, res) => {
     let color = 'red'
+    let opponentColor = 'yellow'
     if (req.cookies && req.cookies.playerColor) {
         color = req.cookies.playerColor;
     }
+    if (req.cookies && req.cookies.opponentColor) {
+        opponentColor = req.cookies.opponentColor;
+    }
     console.log(`Color from the GET customization request: ${color}`)
-    res.render('customization', { color })
+    res.render('customization', { color, opponentColor })
 })
 
 app.post('/customize', (req, res) => {
-    let { color } = req.body 
-    color = color.slice(0, -1)
+    let { color, opponentColor } = req.body 
     console.log(`Request deconstruct ${req.body}`)
-    console.log(`color deconstruct ${color}.`)
+    console.log(`Opponenet Color deconstruct ${opponentColor}.`)
     res.cookie('playerColor', color, { maxAge: 31536000000, httpOnly: true });
+    res.cookie('opponentColor', opponentColor, { maxAge: 31536000000, httpOnly: true });
     console.log(req.cookies)
     res.redirect('/connect4')
 })

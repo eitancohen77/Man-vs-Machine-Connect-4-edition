@@ -12,14 +12,40 @@
     <h1>CUSTOM PAGE</h1>
 
     <form id ='customForm' action="/customize" method="POST">
+        <div id="colorSection">
+            <div id="colorHeader">Current Color</div>
+            <div class="currentColor"  style="background-color: <%=color%>;"></div>
+
+            <div id="updateColor">
+                <div onclick="updateColor('red')" style="background-color: red;" class="colorDiv" id="colorred"></div>
+                <div onclick="updateColor('green')" style="background-color: green;" class="colorDiv" id="colorgreen"></div>
+                <div onclick="updateColor('blue')" style="background-color: blue;" class="colorDiv" id="colorblue"></div>
+                <div onclick="updateColor('rgb(248, 135, 5)')" style="background-color: rgb(248, 135, 5);" class="colorDiv" id="colorrgb(248, 135, 5)"></div>
+                <div onclick="updateColor('rgb(241, 8, 241)')" style="background-color: rgb(241, 8, 241);" class="colorDiv" id="colorrgb(241, 8, 241)"></div>
+                <div onclick="updateColor('yellow')" style="background-color: yellow;" class="colorDiv" id="coloryellow"></div>
+            </div>
+        </div>
+
+
+        <div id="colorSection">
+            <div id="colorHeader">Opponent Color</div>
+            <div class="currentColor"  style="background-color: <%=opponentColor%>;"></div>
+
+            <div id="updateColor">
+                <div onclick="updateOpponentColor('red')" style="background-color: red;" class="opponentColorDiv" id="opponentcolorred"></div>
+                <div onclick="updateOpponentColor('green')" style="background-color: green;" class="opponentColorDiv" id="opponentcolorgreen"></div>
+                <div onclick="updateOpponentColor('blue')" style="background-color: blue;" class="opponentColorDiv" id="opponentcolorblue"></div>
+                <div onclick="updateOpponentColor('rgb(248, 135, 5)')" style="background-color: rgb(248, 135, 5);" class="opponentColorDiv" id="opponentcolorrgb(248, 135, 5)"></div>
+                <div onclick="updateOpponentColor('rgb(241, 8, 241)')" style="background-color: rgb(241, 8, 241);" class="opponentColorDiv" id="opponentcolorrgb(241, 8, 241)"></div>
+                <div onclick="updateOpponentColor('yellow')" style="background-color: yellow;" class="opponentColorDiv" id="opponentcoloryellow"></div>
+            </div>
+        </div>
+        
+        
         <div class="input-field">
             <input type="submit" class="submit" value="Update Color">
         </div>
     </form>
-    <div onclick="updateColor('green')" style="background-color: green; width: 100px; height: 100px;" id="colorDiv"></div>
-    <div onclick="updateColor('blue')" style="background-color: blue; width: 100px; height: 100px;" id="colorDiv"></div>
-    
-    <div id="customizedColor"  style="background-color: <%=color%>; width: 100px; height: 100px;"></div>
 
 
     <script src="/customizeapp.js"></script>

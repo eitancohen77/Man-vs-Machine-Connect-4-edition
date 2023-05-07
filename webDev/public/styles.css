@@ -475,3 +475,61 @@ nav ul li a {
 
 /* -------------------------CUSTOMIZATION PAGE---------------------- */
 
+#colorSection {
+    display: flex;
+    align-items: center;
+    margin: 0px 25px 30px 25px;
+}
+
+#updateColor {
+    display: flex;
+    width: 64%;
+    height: 175px;
+    background-color: rgb(201, 201, 201);
+    align-items: center;
+    border-radius: 40px;
+    margin-left: 100px;
+}
+#colorHeader {
+    font-size: 40px;
+    color: white;
+    width: 150px;
+}
+
+.currentColor {
+    width: 125px;
+    height: 125px;
+    border-radius: 62.5px;
+    margin-left: 10px;
+}
+
+.colorDiv {
+    height: 150px;
+    width: 150px;
+    margin-left: 20px;
+    border-radius: 75px;
+}
+
+.selectedColor {
+    border:5px solid rgb(50, 230, 59);
+}
+
+.colorDiv:hover {
+    cursor: pointer;
+    opacity: 0.4;
+    transition: 0.2s;
+}
+
+
+.opponentColorDiv {
+    height: 150px;
+    width: 150px;
+    margin-left: 20px;
+    border-radius: 75px;
+}
+
+.opponentColorDiv:hover {
+    cursor: pointer;
+    opacity: 0.4;
+    transition: 0.2s;
+}

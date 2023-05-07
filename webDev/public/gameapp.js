@@ -123,14 +123,14 @@ $(document).ready(function() {
         
                             let circle = document.getElementById(id.toString())
                             // Falling circle
-                            const fallingCircle = createFallingCirlce(col, horizontalPosition, verticalPosition, 'yellow')
+                            const fallingCircle = createFallingCirlce(col, horizontalPosition, verticalPosition, oColor)
                             setTimeout(() => {
-                                circle.style.backgroundColor = 'yellow';
+                                circle.style.backgroundColor = oColor;
                                 fallingCircle.remove()
                                 circle.setAttribute('taken', 2);
                                 
                                 if (checkWinner(boardArray, player, row, col)) {
-                                    gameOver = displayWinner('yellow', winnerText)
+                                    gameOver = displayWinner(oColor, winnerText)
                                     console.log('Yellow' + player)
                                     gameHistory = {
                                         id: Math.random(),
