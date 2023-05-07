@@ -11,18 +11,17 @@
     <%- include('partials/navbar') -%>
     <h1>CUSTOM PAGE</h1>
 
-
-    <form action="/customize" method="POST">
+    <form id ='customForm' action="/customize" method="POST">
         <div class="input-field">
-            <input class="input" type="text" name="color" id="color" placeholder="Color">
-        </div>
-
-        <div class="input-field">
-            <input type="submit" class="submit" value="Submit color">
+            <input type="submit" class="submit" value="Update Color">
         </div>
     </form>
-
+    <div onclick="updateColor('green')" style="background-color: green; width: 100px; height: 100px;" id="colorDiv"></div>
+    <div onclick="updateColor('blue')" style="background-color: blue; width: 100px; height: 100px;" id="colorDiv"></div>
+    
     <div id="customizedColor"  style="background-color: <%=color%>; width: 100px; height: 100px;"></div>
 
+
+    <script src="/customizeapp.js"></script>
 </body>
 </html>

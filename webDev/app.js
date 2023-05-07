@@ -118,9 +118,10 @@ app.get('/connect4/customization', requireLogin, (req, res) => {
 })
 
 app.post('/customize', (req, res) => {
-    const { color } = req.body
-    console.log(req.cookies)
-    console.log(color)
+    let { color } = req.body 
+    color = color.slice(0, -1)
+    console.log(`Request deconstruct ${req.body}`)
+    console.log(`color deconstruct ${color}.`)
     res.cookie('playerColor', color, { maxAge: 31536000000, httpOnly: true });
     console.log(req.cookies)
     res.redirect('/connect4')
