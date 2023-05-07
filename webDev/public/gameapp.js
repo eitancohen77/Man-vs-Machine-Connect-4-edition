@@ -42,7 +42,7 @@ $(document).ready(function() {
                         topCircle = document.getElementById(id);
                     }
                     circle.style.transition = 'background-color 0.15s ease-in-out'
-                    circle.style.backgroundColor = 'red'      
+                    circle.style.backgroundColor = pColor      
                 }  
             }   
         })
@@ -86,14 +86,14 @@ $(document).ready(function() {
                 moves.push(position);
                 
 
-                const fallingCircle = createFallingCirlce(col, horizontalPosition, verticalPosition, 'red')
+                const fallingCircle = createFallingCirlce(col, horizontalPosition, verticalPosition, pColor)
                 setTimeout(() => {
-                    circle.style.backgroundColor = 'red';
+                    circle.style.backgroundColor = pColor;
                     fallingCircle.remove()
                     circle.setAttribute('taken', 1);
                     
                     if (checkWinner(boardArray, player, row, col)) {
-                        gameOver = displayWinner('red', winnerText)
+                        gameOver = displayWinner(pColor, winnerText)
                         gameHistory = {
                             id: Math.random(),
                             winner: 1,

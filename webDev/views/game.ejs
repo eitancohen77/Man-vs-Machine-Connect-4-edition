@@ -10,7 +10,7 @@
 </head>
 <body>
   <%- include('partials/navbar') -%>
-
+    <div><%=playerColor%></div>
     <div class="container">
         <div id="hover_grid"></div>
 
@@ -80,7 +80,9 @@
 
         <div id="winner"></div>
     </div>
-
+    <script>
+      const pColor = '<%= playerColor %>';
+    </script>
     <script src="/gameapp.js"></script>
 </body>
 </html>

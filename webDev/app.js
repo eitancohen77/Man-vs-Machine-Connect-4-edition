@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const Player = require('./models/players')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
+const cookieParser = require('cookie-parser')
 
 
 mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
@@ -27,6 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: false}
 app.use(session( sessionOptions));
+app.use(cookieParser())
 
 const requireLogin = (req, res, next) => {
     if (!req.session.user_id) { 
@@ -62,8 +64,8 @@ app.post('/login', async(req, res) => {
     const { username, password } = req.body
     const user = await Player.findOne({ username })
     const validPassword = await bcrypt.compare(password, user.password)
-    if (!req.session.playerColor) {
-        req.session.playerColor = 'red'
+    if (req.cookies == null) {
+        res.cookie('playerColor', 'red', { maxAge: 31536000000, httpOnly: true });
     }
     if (validPassword) { // Checks if it exisits
         req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
@@ -90,7 +92,8 @@ app.get('/secret', (req, res) => {
 app.get('/connect4/play', requireLogin, async(req, res) => {
     const user = await Player.findById({_id: req.session.user_id});
     const { username } = user
-    res.render('game', {username})
+    const { playerColor } = req.cookies
+    res.render('game', {username, playerColor})
 })
 
 app.get('/connect4/bot', requireLogin, async(req, res) => {
@@ -105,14 +108,21 @@ app.get('/connect4/stats', requireLogin, async(req, res) => {
     res.render('stats', { stats })
 })
 
-app.get('/connect4/customization', requireLogin, async(req, res) => {
-    const color = req.session.playerColor;
+app.get('/connect4/customization', requireLogin, (req, res) => {
+    let color = 'red'
+    if (req.cookies && req.cookies.playerColor) {
+        color = req.cookies.playerColor;
+    }
+    console.log(`Color from the GET customization request: ${color}`)
     res.render('customization', { color })
 })
 
 app.post('/customize', (req, res) => {
     const { color } = req.body
-    req.session.playerColor = color
+    console.log(req.cookies)
+    console.log(color)
+    res.cookie('playerColor', color, { maxAge: 31536000000, httpOnly: true });
+    console.log(req.cookies)
     res.redirect('/connect4')
 })
 
