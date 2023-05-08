@@ -24,19 +24,39 @@
     <% let game = 0 %>
     <% let count = 0 %>
 
-    <% for (let p of stats) { %>
+    <div id="gameEnvironment">
+        <div  id="gameNumber">Game Number ${game}</div>
         <div id="displayGame"></div>
-        <div onclick="createEnvironment()" id="gameNumber"><%=game%></div>
+    </div>
+    
+    <div id="pickGames">
+        <% for (let p of stats) { %>
+            <div class="game" onclick="createLogic(<%= JSON.stringify(stats)%>, <%=game%>)"><%=game + 1%>
+                <% if (p.winner == 1) { %>
+                    <div>You Won</div>
+                <% } else { %>
+                    <div>Baby Bot Won</div>
+                <% } %>
+            </div>
+            <div class='gameMove' id="forward<%=game%>" onclick="forwardMove(<%= JSON.stringify(stats)%>, <%=game%>)">Forward</div>
+            <div class='gameMove' id="backward<%=game%>" onclick="backwardMove(<%= JSON.stringify(stats)%>, <%=game%>)">Backward</div>
+            <% game++ %>
+        <% } %> 
+    </div>
+    <!-- <% for (let p of stats) { %>
+        <div class="game" onclick="createLogic(<%= JSON.stringify(stats)%>, <%=game%>)">
+            <div onclick="createEnvironment()" id="gameNumber"><%=game + 1%></div>
+            <% if (p.winner == 1) { %>
+                <div>You Won</div>
+             <% } else { %>
+                 <div>Baby Bot Won</div>
+             <% } %>
+        </div>
+        <div id="displayGame"></div>
         <div id="forward" onclick="forwardMove(<%= JSON.stringify(stats)%>, <%=game%>)">Move Forward</div>
         <div id="backward" onclick="backwardMove(<%= JSON.stringify(stats)%>, <%=game%>)">Move Backward</div>
-
-        <% if (p.winner == 1) { %>
-           <div id="displayWinner">You Won</div>
-        <% } else { %>
-            <div id="displayWinner">Baby Bot Won</div>
-        <% } %>
         <% game++ %>
-    <% } %>
+    <% } %> -->
 
     <div id="countId"><%=count%></div>
     <div id="moveCounter"><%=count%></div>
@@ -90,10 +110,6 @@
         <div class ="circlePosition" id="40"></div>
         <div class ="circlePosition" id="41"></div> -->
     </div>
-    <div onclick="createBoard()">Click here to create board</div>
-    <div onclick="deleteBoard()">DELETE BOARD</div>
-    <div id="forward" onclick="forwardMove(<%= JSON.stringify(stats)%>, <%=0%>)">Move Forward</div>
-    <div id="backward" onclick="backwardMove(<%= JSON.stringify(stats)%>, <%=0%>)">Move Backward</div>
 
     <!-- <h1 id="statHeader">You are <%=countWins%>:<%=totalgames%> with this bot</h1>
     <% for (let p of stats) { %>
