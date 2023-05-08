@@ -486,12 +486,12 @@ nav ul li a {
 #colorSection {
     display: flex;
     align-items: center;
-    margin: 0px 25px 30px 25px;
+    margin: 0px 25px 30px 60px;
 }
 
 #updateColor {
     display: flex;
-    width: 64%;
+    width: 65.5%;
     height: 175px;
     background-color: rgb(201, 201, 201);
     align-items: center;
