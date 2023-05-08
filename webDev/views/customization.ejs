@@ -9,7 +9,7 @@
 </head>
 <body>
     <%- include('partials/navbar') -%>
-    <h1>CUSTOM PAGE</h1>
+    <div id="customHeader">Customize Your Settings</div>
 
     <form id ='customForm' action="/customize" method="POST">
         <div id="colorSection">
@@ -40,10 +40,8 @@
                 <div onclick="updateOpponentColor('yellow')" style="background-color: yellow;" class="opponentColorDiv" id="opponentcoloryellow"></div>
             </div>
         </div>
-        
-        
-        <div class="input-field">
-            <input type="submit" class="submit" value="Update Color">
+        <div id="submitGrid">
+            <input type="submit" class="customSubmit" value="Update Settings">
         </div>
     </form>
 
