@@ -142,7 +142,7 @@ app.post('/sendGameHistory', async(req, res) => {
 app.post('/process-data', (req, res) => {
     const board_data = req.body;
     // Here we are telling it to send the json data to transfer.py, 
-    const pythonProcess = spawn('python3', ['./trasnfer.py', JSON.stringify({'array': board_data})]);
+    const pythonProcess = spawn('python', ['./trasnfer.py', JSON.stringify({'array': board_data})]);
     
     pythonProcess.stdout.on('data', output => {
       // Send the manipulated data back to the client
