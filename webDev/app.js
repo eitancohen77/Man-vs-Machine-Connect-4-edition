@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
+const AppError = require('./error/AppError');
 
 
 mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
@@ -31,6 +32,7 @@ const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: f
 app.use(session( sessionOptions));
 app.use(flash());
 app.use(cookieParser())
+
 // Rendering flash messages amongst all routes
 app.use((req, res, next) => {
     res.locals.userTaken = req.flash('userTaken')
@@ -180,6 +182,17 @@ app.post('/process-data', (req, res) => {
         console.error('Python script error:', error.toString());
         res.status(500).send('An error occurred while processing the data.');
     });
+});
+
+
+app.all('*', (req, res, next) => {
+    next(new AppError('Page Not Found', 404))
+ })
+ 
+app.use((err, req, res, next) => {
+    const { status = 500 } = err;
+    if (!err.message) err.message = 'Something went wrong';
+    res.status(status).render('error', { err });
 });
 
 app.listen(3000, () => {

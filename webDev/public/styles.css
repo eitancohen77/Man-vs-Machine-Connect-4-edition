@@ -617,3 +617,16 @@ nav ul li a {
     cursor: pointer;
     background-color: rgb(255, 255, 255, 0.4);
 }
+
+/* ---------------------------AppError--------------------- */
+#errorGrid {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 500px;
+    height: auto;
+    background-color: rgb(250, 186, 186);
+}
+#errorMessage {
+    font-size: 40px;
+}
