@@ -447,6 +447,12 @@ nav ul li a {
 
 /* ---------------------Login/Register-------------------------- */
 
+#loginIncorrect {
+    margin-top: 5px;
+    font-size: 25px;
+    color: rgb(255, 117, 117);
+}
+
 #loginBox {
     font-family: "Poppins", san serif;
     margin-top: 200px;

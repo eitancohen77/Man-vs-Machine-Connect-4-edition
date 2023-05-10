@@ -9,6 +9,7 @@ const Player = require('./models/players')
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
 
 
 mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
@@ -28,7 +29,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: false}
 app.use(session( sessionOptions));
+app.use(flash());
 app.use(cookieParser())
+// Rendering flash messages amongst all routes
+app.use((req, res, next) => {
+    res.locals.messages = req.flash('retry');
+    next()
+})
 
 const requireLogin = (req, res, next) => {
     if (!req.session.user_id) { 
@@ -63,15 +70,21 @@ app.get('/login', (req, res) => {
 app.post('/login', async(req, res) => {
     const { username, password } = req.body
     const user = await Player.findOne({ username })
-    const validPassword = await bcrypt.compare(password, user.password)
-    if (req.cookies == null) {
-        res.cookie('playerColor', 'red', { maxAge: 31536000000, httpOnly: true });
-    }
-    if (validPassword) { // Checks if it exisits
-        req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
-        res.redirect('/connect4/customization')
+    if (user == null) {
+        req.flash('retry', 'Username or Password Incorrect');
+        res.redirect('/login')
     } else {
-        res.send("Password or Username Incorrect")
+        const validPassword = await bcrypt.compare(password, user.password)
+        if (req.cookies == null) {
+            res.cookie('playerColor', 'red', { maxAge: 31536000000, httpOnly: true });
+        }
+        if (validPassword) { // Checks if it exisits
+            req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
+            res.redirect('/connect4/customization')
+        } else {
+            req.flash('retry', "Username or Password Incorrect")
+            res.redirect('/login')
+        }
     }
 })
 
