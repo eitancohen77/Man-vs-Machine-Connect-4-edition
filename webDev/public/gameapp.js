@@ -109,6 +109,7 @@ $(document).ready(function() {
                     // Switching turns
                     if (player === -1 && gameOver === false && count_to_tie < 42) {         
                         process_data(boardArray).then((returnedData) => {
+                            console.log(typeof(returnedData))
                             console.log('Returned Data:', returnedData);
                             row = returnedData['row']       // Gets back the row information of the random move
                             const col = returnedData['col'] // Gets back the column information 

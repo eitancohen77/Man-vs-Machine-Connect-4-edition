@@ -173,7 +173,7 @@ app.post('/process-data', (req, res) => {
     
     pythonProcess.stdout.on('data', output => {
       // Send the manipulated data back to the client
-        console.log('Python script output:', output.toString());
+        console.log('Python script output:', typeof(output), output);
         res.json(JSON.parse(output));
     });
 

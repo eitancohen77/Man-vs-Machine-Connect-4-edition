@@ -1,8 +1,8 @@
 import sys
 import json
 import random
-#import tensorflow as stf
-#import numpy as np
+import tensorflow as tf
+import numpy as np
 
 
 def random_move(board_array):
@@ -23,32 +23,25 @@ def random_move(board_array):
             return move
             
 
-""" # We do argv[1] because on the server side, we sent the data as: ['./trasnfer.py', JSON.stringify(board_data)] 
-json_data = sys.argv[1]
 
-array_data = json.loads(json_data)['array']
-
-print("Received 2D array in Python script:")
-
-move = random_move(array_data)
-changed_data = {
-    'move': move
-}
-
-json_data = json.dumps(changed_data)
-
-
-headers = {'Content-Type': 'application/json'}
-response = requests.post('http://localhost:3000/receiveManipulatedData', json=changed_data, headers = headers)
-print(response.status_code) """
 
 
 data = sys.argv[1]
 
+# Contains 2D data
 parsed_data = json.loads(data)['array']
 
+print(f'From agent move {parsed_data}')
+#-------------AGERNT---------------
+np_array = np.array(parsed_data)
 # Manipulate the data
-move = random_move(parsed_data)
+
+agent = tf.keras.models.load_model('C:\Users\Eitan\Documents\Projects\Man-vs-Machine-Connect-4-edition\webDev\Agent_models')
+move = agent.predict(np_array.reshape(1, 6, 7, 1)) 
+
+#-------------RANXDOM---------------
+#move = random_move(parsed_data) 
+
 changed_data = move
 
 # Convert the manipulated data to JSON format
