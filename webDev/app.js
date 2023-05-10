@@ -33,7 +33,8 @@ app.use(flash());
 app.use(cookieParser())
 // Rendering flash messages amongst all routes
 app.use((req, res, next) => {
-    res.locals.messages = req.flash('retry');
+    res.locals.userTaken = req.flash('userTaken')
+    res.locals.retry = req.flash('retry');
     next()
 })
 
@@ -50,13 +51,24 @@ app.get('/register', (req, res) => {
 
 app.post('/register', async(req, res) => {
     const {password, username} = req.body
-    const hash = await bcrypt.hash(password, 12);
-    const user = new Player ({
-        username,
-        password: hash
-    })
-    await user.save()
-    res.redirect('/login')
+    userTaken = await Player.findOne({ username })
+    // If there isnt a user with that name we can continue:
+    if (userTaken == null) {
+        const hash = await bcrypt.hash(password, 12);
+        const user = new Player ({
+            username,
+            password: hash
+        })
+        await user.save()
+        res.redirect('/login')
+    // If there is a user already with that name, we want to alert
+    // a flash to let the end-user that the username is already taken
+    // and he should try a new one
+    } else {
+        req.flash('userTaken', 'Username already taken')
+        res.redirect('/register')
+    }
+    
 })
 
 app.get('/connect4', (req, res) => {
