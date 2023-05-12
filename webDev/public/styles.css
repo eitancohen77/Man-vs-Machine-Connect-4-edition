@@ -125,7 +125,11 @@ body {
 #player1 {
     width: 200px;
     height: 200px;
-    background-color: red;
+    background-image: url(/images/User_Icon.png);
+    background-color: rgb(0, 0, 0, 0.2);
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
     border-radius: 15px;
 }
 #player2 {
@@ -137,6 +141,17 @@ body {
     background-size: contain;
     background-position: center;
     border-radius: 15px;
+}
+
+#w {
+    position: absolute;
+    margin-top: 50px;
+    text-align: center;
+    background-color: rgb(0, 0, 0, 0.7);
+    width: 595px;
+    height: 200px;
+    font-size: 75px;
+    transition: 0.5s
 }
 
 
@@ -620,13 +635,24 @@ nav ul li a {
 
 /* ---------------------------AppError--------------------- */
 #errorGrid {
+    position: absolute;
+    top: 10%;
+    left: 30%;
     display: flex;
-    justify-content: center;
+    align-items: center;
     flex-direction: column;
-    width: 500px;
-    height: auto;
+    width: 700px;
+    height: 500px;
     background-color: rgb(250, 186, 186);
+    border-radius: 50px;
+    font-family: "Cambria", "Courier New", monospace;
 }
+
 #errorMessage {
     font-size: 40px;
+    color: rgb(121, 0, 0);
+}
+
+#errorDescrip {
+    font-size: 20px;
 }

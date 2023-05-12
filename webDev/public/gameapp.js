@@ -4,7 +4,7 @@ $(document).ready(function() {
     let player = 1; // FOR JOE!!!: This variable controls which turn it is. It does this by acting as a clock, switching from -1 to 1
     let gameOver = false 
     const restart = document.querySelector('#restart')
-    let winnerText = document.querySelector('#winner')
+    let winnerText = document.querySelector('#w')
     let count_to_tie = 0;
     let gameHistorys = [];
     let moves = [];
@@ -93,7 +93,7 @@ $(document).ready(function() {
                     circle.setAttribute('taken', 1);
                     
                     if (checkWinner(boardArray, player, row, col)) {
-                        gameOver = displayWinner(pColor, winnerText)
+                        gameOver = displayWinner(userName, pColor,  winnerText)
                         gameHistory = {
                             id: Math.random(),
                             winner: 1,
@@ -109,7 +109,6 @@ $(document).ready(function() {
                     // Switching turns
                     if (player === -1 && gameOver === false && count_to_tie < 42) {         
                         process_data(boardArray).then((returnedData) => {
-                            console.log(typeof(returnedData))
                             console.log('Returned Data:', returnedData);
                             row = returnedData['row']       // Gets back the row information of the random move
                             const col = returnedData['col'] // Gets back the column information 
@@ -131,7 +130,7 @@ $(document).ready(function() {
                                 circle.setAttribute('taken', 2);
                                 
                                 if (checkWinner(boardArray, player, row, col)) {
-                                    gameOver = displayWinner(oColor, winnerText)
+                                    gameOver = displayWinner('babyBot', oColor, winnerText)
                                     console.log('Yellow' + player)
                                     gameHistory = {
                                         id: Math.random(),
@@ -176,7 +175,7 @@ $(document).ready(function() {
             circle.setAttribute('taken', 0);
         }
         winnerText.textContent = ''
-        winnerText.style.color = 'black'
+        winnerText.style.display = 'none'
         count_to_tie = 0;
         player = 1;
         gameOver = false
@@ -329,11 +328,11 @@ function createFallingCirlce(col, horizontalPosition, verticalPosition, color){
     fallingCircle.classList.add('fall');
     return fallingCircle
 }
-function displayWinner(playerColor, winnerText) {
-    winnerText.textContent = `${playerColor} WINS`
+function displayWinner(name, playerColor, winnerText) {
+    winnerText.textContent = `${name} wins`
     winnerText.style.color = playerColor
-    winnerText.classList.add('displayGameWinner')
-    console.log(`${playerColor} wins`)
+    winnerText.style.display = 'block'
+    /* winnerText.classList.add('displayGameWinner') */
     return true
 }
 

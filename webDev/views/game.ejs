@@ -21,6 +21,7 @@
           </div>
 
             <div id="board">
+              <div id="w" style="display:none">WINNER</div>
                 <div class ="circle" id="0"></div>
                 <div class ="circle" id="1"></div>
                 <div class ="circle" id="2"></div>
@@ -83,6 +84,7 @@
     <script>
       const pColor = '<%= playerColor %>';
       const oColor = '<%= opponentColor %>';
+      const userName = '<%= username %>'
     </script>
     <script src="/gameapp.js"></script>
 </body>
