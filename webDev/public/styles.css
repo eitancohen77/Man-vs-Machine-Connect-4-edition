@@ -221,7 +221,8 @@ nav ul li a {
 }
 
 #siteHeader {
-    font-size: 80px;
+    width: 550px;
+    font-size: 120px;
     color:white;
 }
 
@@ -246,7 +247,7 @@ nav ul li a {
 }
 
 .bot_col {
-    margin-left: 200px;
+    margin-left: 100px;
     max-width: 100%;
     max-height: 100%;
     display:flex;
@@ -255,8 +256,8 @@ nav ul li a {
 }
 
 .card {
-    min-height: 150px;
-    min-width: 150px;
+    min-height: 225px;
+    min-width: 225px;
     /* display: inline-block; */
     border-radius: 10px;
     padding: 15px 25px;
@@ -265,43 +266,31 @@ nav ul li a {
     margin: 10px 15px;
     transition: transform 0.3s, box-shadow 0.1s;
     flex-basis: 25%;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-color: rgba(111, 245, 245, 0.6);
 }
 
 
 
 .card1 {
-    background-color: rgba(111, 245, 245, 0.6);
     background-image: url(images/babyImage.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
 }
 .card2 {
-    background-color: rgba(111, 245, 245, 0.6);
     background-image: url(images/begginer.png);
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
 }
 .card3 {
-    background-color: aqua;
     background-image: url(images/babyImage.png);
-    background-size: contain;
 }
 .card4 {
-    background-color: rgba(111, 245, 245, 0.6);
     background-image: url(images/babyImage.png);
-    background-size: contain;
 }
 .card5 {
-    background-color: aqua;
     background-image: url(images/babyImage.png);
-    background-size: contain;
 }
 .card6 {
-    background-color: aqua;
     background-image: url(images/babyImage.png);
-    background-size: contain;
 }
 
 .card1:hover ~ .col > .para {
@@ -560,6 +549,7 @@ nav ul li a {
 }
 
 #updateColor {
+    padding-right:20px;
     display: flex;
     width: 65.5%;
     height: 175px;
@@ -582,6 +572,8 @@ nav ul li a {
 }
 
 .colorDiv {
+    min-height: 100px;
+    min-width: 100px;
     height: 150px;
     width: 150px;
     margin-left: 20px;
@@ -600,6 +592,8 @@ nav ul li a {
 
 
 .opponentColorDiv {
+    min-height: 100px;
+    min-width: 100px;
     height: 150px;
     width: 150px;
     margin-left: 20px;

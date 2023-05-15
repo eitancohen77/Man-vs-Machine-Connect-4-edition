@@ -94,7 +94,7 @@ app.post('/login', async(req, res) => {
         }
         if (validPassword) { // Checks if it exisits
             req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
-            res.redirect('/connect4/customization')
+            res.redirect('/connect4')
         } else {
             req.flash('retry', "Username or Password Incorrect")
             res.redirect('/login')
