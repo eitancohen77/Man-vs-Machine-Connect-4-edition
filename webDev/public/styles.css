@@ -235,9 +235,18 @@ nav ul li a {
 
 .para {
     color: white;
+    font-size: 50px;
+    text-align: center;
+    opacity: 0;
+}
+
+.botDescription {
+    word-wrap: break-word;
+    color: white;
     font-size: 30px;
     text-align: center;
     opacity: 0;
+    width: 550px;
 }
 
 .info_col {
@@ -278,16 +287,16 @@ nav ul li a {
     background-image: url(images/babyImage.png);
 }
 .card2 {
-    background-image: url(images/begginer.png);
+    background-image: url(images/puppyBot.png);
 }
 .card3 {
-    background-image: url(images/babyImage.png);
+    background-image: url(images/childBot.png);
 }
 .card4 {
-    background-image: url(images/babyImage.png);
+    background-image: url(images/teenagerBot.png);
 }
 .card5 {
-    background-image: url(images/babyImage.png);
+    background-image: url(images/EinsteinBot.png);
 }
 .card6 {
     background-image: url(images/babyImage.png);
