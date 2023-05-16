@@ -65,13 +65,6 @@ function forwardMove(data, game) {
         moveCount++;
         document.getElementById('moveCounter').textContent = moveCount
     }
-    /* for (let i of data) {
-        console.log(i.winner)
-        let winner = document.createElement('div');
-        winner.classList.add('winner')
-        winner.textContent = i.winner
-        container.appendChild(winner)
-    }     */
 }
 
 function backwardMove(data, game) {
@@ -84,13 +77,6 @@ function backwardMove(data, game) {
         circle.style.backgroundColor = 'white'
         document.getElementById('moveCounter').textContent = moveCount
     }
-        /* for (let i of data) {
-        console.log(i.winner)
-        let winner = document.createElement('div');
-        winner.classList.add('winner')
-        winner.textContent = i.winner
-        container.appendChild(winner)
-    }     */
 }
 
 const forward = document.getElementById('forward')

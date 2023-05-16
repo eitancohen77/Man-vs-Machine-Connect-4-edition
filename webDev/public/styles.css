@@ -154,7 +154,22 @@ body {
     transition: 0.5s
 }
 
-
+#restart {
+    color: white;
+    border: none;
+    border-radius:30px;
+    height: 45px;
+    width: 100px;
+    outline: none;
+    background-color: rgb(255, 255, 255, 0.3);
+    margin-top:20px;
+    font-size: 20px;
+    transition: background-color 0.1s;
+}
+#restart:hover {
+    cursor: pointer;
+    background-color: rgb(255, 255, 255, 0.2);
+}
 
 /* Home Page */
 
@@ -174,6 +189,7 @@ body {
     display: flex;
     align-items: center;
     background-color: rgb(0, 0, 0);
+    font-family: 'Lato', sans-serif;
 }
 
 .navbarlogo {
@@ -213,8 +229,6 @@ nav ul li a {
     outline: none;
     border: none;
     font-size: 17px;
-    font-family: "Times New Roman", Times, serif;
-
 }
 #logoutButton:hover {
     cursor: pointer;

@@ -2,17 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const playerSchema = new Schema({
-
     /* babyBot: [{
-        game: {
-            gameID: Number,
-            winner: Number,
-            moves:[{
-                plays: Number,
-                position: Number
-            }]
-        }
-    }] */
+        gameID: Number,
+        winner: Number,
+        moves:[{
+            plays: Number,
+            position: Number
+        }]
+    }] 
+    */
+
             username: {
                 type: String,
                 required: [true, 'Username cannot be blank']
@@ -21,7 +20,7 @@ const playerSchema = new Schema({
                 type: String,
                 required: [true, 'Password cannot be blank']
             },
-            stats: [{
+            stats: [{ 
                 gameID: Number,
                 winner: Number,
                 moves:[{
@@ -29,6 +28,7 @@ const playerSchema = new Schema({
                     position: Number
                 }]
             }]
+            
 });
 
 module.exports = mongoose.model('Player', playerSchema);
