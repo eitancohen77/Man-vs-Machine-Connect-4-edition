@@ -1,23 +1,3 @@
-/* document.getElementById('customForm').addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent the default form submission
-
-    const colorDiv = document.getElementById('colorDiv');
-    const color = colorDiv.textContent; // Get the content of the div
-
-    // Create a hidden input element and set its value to the content of the div
-    const hiddenInput = document.createElement('input');
-    hiddenInput.type = 'hidden';
-    hiddenInput.name = 'color';
-    hiddenInput.value = color;
-
-    // Add the hidden input to the form
-    const customForm = document.getElementById('customForm');
-    customForm.appendChild(hiddenInput);
-
-    // Submit the form
-    customForm.submit();
-}); */
-
 function updateColor(color) {
     const customForm = document.getElementById('customForm');
     // If the user decides to switch its color, we need to remove
@@ -48,7 +28,7 @@ function updateColor(color) {
 function updateOpponentColor(opponentColor) {
     console.log(opponentColor)
     const customForm = document.getElementById('customForm');
-    
+
     console.log(customForm.childNodes)
     let hiddenInput = document.getElementById('opponentColorValue');
     if (!hiddenInput) {
