@@ -11,9 +11,10 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const AppError = require('./error/AppError');
+const DATABASE_URL = 'mongodb://127.0.0.1:27017/connect4'
 
 
-mongoose.connect('mongodb://localhost:27017/connect4', { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "CONNECTION ERROR"));
 db.once("open", () => {
@@ -28,8 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: false}
-app.use(session( sessionOptions));
+const sessionOptions = { secret: 'mysecret', resave: false, saveUninitialized: false }
+app.use(session(sessionOptions));
 app.use(flash());
 app.use(cookieParser())
 
@@ -41,7 +42,7 @@ app.use((req, res, next) => {
 })
 
 const requireLogin = (req, res, next) => {
-    if (!req.session.user_id) { 
+    if (!req.session.user_id) {
         return res.redirect('/login')// If they are not logged in it will redirect them to the logged in page:
     }
     next();// If they are logged in:
@@ -51,26 +52,26 @@ app.get('/register', (req, res) => {
     res.render('register')
 })
 
-app.post('/register', async(req, res) => {
-    const {password, username} = req.body
+app.post('/register', async (req, res) => {
+    const { password, username } = req.body
     userTaken = await Player.findOne({ username })
     // If there isnt a user with that name we can continue:
     if (userTaken == null) {
         const hash = await bcrypt.hash(password, 12);
-        const user = new Player ({
+        const user = new Player({
             username,
             password: hash
         })
         await user.save()
         res.redirect('/login')
-    // If there is a user already with that name, we want to alert
-    // a flash to let the end-user that the username is already taken
-    // and he should try a new one
+        // If there is a user already with that name, we want to alert
+        // a flash to let the end-user that the username is already taken
+        // and he should try a new one
     } else {
         req.flash('userTaken', 'Username already taken')
         res.redirect('/register')
     }
-    
+
 })
 
 app.get('/connect4', (req, res) => {
@@ -81,7 +82,7 @@ app.get('/login', (req, res) => {
     res.render('login')
 })
 
-app.post('/login', async(req, res) => {
+app.post('/login', async (req, res) => {
     const { username, password } = req.body
     const user = await Player.findOne({ username })
     if (user == null) {
@@ -116,21 +117,21 @@ app.get('/secret', (req, res) => {
 })
 
 
-app.get('/connect4/play', requireLogin, async(req, res) => {
-    const user = await Player.findById({_id: req.session.user_id});
+app.get('/connect4/play', requireLogin, async (req, res) => {
+    const user = await Player.findById({ _id: req.session.user_id });
     const { username } = user
     const { playerColor, opponentColor } = req.cookies
-    res.render('game', {username, playerColor, opponentColor})
+    res.render('game', { username, playerColor, opponentColor })
 })
 
-app.get('/connect4/bot', requireLogin, async(req, res) => {
-    const user = await Player.findById({_id: req.session.user_id});
+app.get('/connect4/bot', requireLogin, async (req, res) => {
+    const user = await Player.findById({ _id: req.session.user_id });
     const { stats } = user;
     res.render('botStats', { stats })
 })
 
-app.get('/connect4/stats', requireLogin, async(req, res) => {
-    const players = await Player.findById({_id: req.session.user_id});
+app.get('/connect4/stats', requireLogin, async (req, res) => {
+    const players = await Player.findById({ _id: req.session.user_id });
     const { stats } = players
     res.render('stats', { stats })
 })
@@ -149,7 +150,7 @@ app.get('/connect4/customization', requireLogin, (req, res) => {
 })
 
 app.post('/customize', (req, res) => {
-    let { color, opponentColor } = req.body 
+    let { color, opponentColor } = req.body
     console.log(`Request deconstruct ${req.body}`)
     console.log(`Opponenet Color deconstruct ${opponentColor}.`)
     res.cookie('playerColor', color, { maxAge: 31536000000, httpOnly: true });
@@ -158,8 +159,8 @@ app.post('/customize', (req, res) => {
     res.redirect('/connect4')
 })
 
-app.post('/sendGameHistory', async(req, res) => {
-    const user = await Player.updateOne({_id: req.session.user_id}, { $push: {stats: req.body }})
+app.post('/sendGameHistory', async (req, res) => {
+    const user = await Player.updateOne({ _id: req.session.user_id }, { $push: { stats: req.body } })
     console.log(user)
 })
 
@@ -169,11 +170,11 @@ app.post('/sendGameHistory', async(req, res) => {
 app.post('/process-data', (req, res) => {
     const board_data = req.body;
     // Here we are telling it to send the json data to transfer.py, 
-    const pythonProcess = spawn('python', ['./trasnfer.py', JSON.stringify({'array': board_data})]);
-    
+    const pythonProcess = spawn('python', ['./trasnfer.py', JSON.stringify({ 'array': board_data })]);
+
     pythonProcess.stdout.on('data', output => {
-      // Send the manipulated data back to the client
-        console.log('Python script output:', typeof(output), output);
+        // Send the manipulated data back to the client
+        console.log('Python script output:', typeof (output), output);
         res.json(JSON.parse(output));
     });
 
@@ -184,11 +185,10 @@ app.post('/process-data', (req, res) => {
     });
 });
 
-
 app.all('*', (req, res, next) => {
     next(new AppError('Page Not Found', 404))
- })
- 
+})
+
 app.use((err, req, res, next) => {
     const { status = 500 } = err;
     if (!err.message) err.message = 'Something went wrong';

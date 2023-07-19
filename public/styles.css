@@ -261,6 +261,7 @@ nav ul li a {
     text-align: center;
     opacity: 0;
     width: 550px;
+    height: 200px;
 }
 
 .info_col {
