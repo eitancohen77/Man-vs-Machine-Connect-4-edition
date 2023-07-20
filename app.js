@@ -6,13 +6,14 @@ const { spawn } = require('child_process');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Player = require('./models/players')
-const bcrypt = require('bcrypt');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const AppError = require('./error/AppError');
 const DATABASE_URL = 'mongodb://127.0.0.1:27017/connect4'
-
+const connect4Routes = require('./routes/connect4Router')
+const loginRoutes = require('./routes/loginRouter')
+const registerRouters = require('./routes/registerRouter')
 
 mongoose.connect(DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection;
@@ -41,113 +42,24 @@ app.use((req, res, next) => {
     next()
 })
 
-const requireLogin = (req, res, next) => {
-    if (!req.session.user_id) {
-        return res.redirect('/login')// If they are not logged in it will redirect them to the logged in page:
-    }
-    next();// If they are logged in:
-}
+app.use('/connect4', connect4Routes);
 
-app.get('/register', (req, res) => {
-    res.render('register')
-})
+app.use('/login', loginRoutes);
 
-app.post('/register', async (req, res) => {
-    const { password, username } = req.body
-    userTaken = await Player.findOne({ username })
-    // If there isnt a user with that name we can continue:
-    if (userTaken == null) {
-        const hash = await bcrypt.hash(password, 12);
-        const user = new Player({
-            username,
-            password: hash
-        })
-        await user.save()
-        res.redirect('/login')
-        // If there is a user already with that name, we want to alert
-        // a flash to let the end-user that the username is already taken
-        // and he should try a new one
-    } else {
-        req.flash('userTaken', 'Username already taken')
-        res.redirect('/register')
-    }
-
-})
-
-app.get('/connect4', (req, res) => {
-    res.render('home')
-})
-
-app.get('/login', (req, res) => {
-    res.render('login')
-})
-
-app.post('/login', async (req, res) => {
-    const { username, password } = req.body
-    const user = await Player.findOne({ username })
-    if (user == null) {
-        req.flash('retry', 'Username or Password Incorrect');
-        res.redirect('/login')
-    } else {
-        const validPassword = await bcrypt.compare(password, user.password)
-        if (req.cookies == null) {
-            res.cookie('playerColor', 'red', { maxAge: 31536000000, httpOnly: true });
-        }
-        if (validPassword) { // Checks if it exisits
-            req.session.user_id = user._id // Each username has a built in ID from mongoose. We are taking that ID and mapping it to a session id 
-            res.redirect('/connect4')
-        } else {
-            req.flash('retry', "Username or Password Incorrect")
-            res.redirect('/login')
-        }
-    }
-})
+app.use('/register', registerRouters);
 
 app.post('/logout', (req, res) => {
     req.session.user_id = null;
     res.redirect('/connect4')
 })
 
-app.get('/secret', (req, res) => {
+/* app.get('/secret', (req, res) => {
     if (req.session.user_id) { // If they are logged in:
         res.send('THIS IS SECRET YOU CANNOT SEE ME')
     } else { // otherwise they are not logged in and I will redirect them to the logged in page:
         res.send('Sorry. login first to see the secret')
     }
-})
-
-
-app.get('/connect4/play', requireLogin, async (req, res) => {
-    const user = await Player.findById({ _id: req.session.user_id });
-    const { username } = user
-    const { playerColor, opponentColor } = req.cookies
-    res.render('game', { username, playerColor, opponentColor })
-})
-
-app.get('/connect4/bot', requireLogin, async (req, res) => {
-    const user = await Player.findById({ _id: req.session.user_id });
-    const { stats } = user;
-    res.render('botStats', { stats })
-})
-
-app.get('/connect4/stats', requireLogin, async (req, res) => {
-    const players = await Player.findById({ _id: req.session.user_id });
-    const { stats } = players
-    res.render('stats', { stats })
-})
-
-app.get('/connect4/customization', requireLogin, (req, res) => {
-    let color = 'red'
-    let opponentColor = 'yellow'
-    if (req.cookies && req.cookies.playerColor) {
-        color = req.cookies.playerColor;
-    }
-    if (req.cookies && req.cookies.opponentColor) {
-        opponentColor = req.cookies.opponentColor;
-    }
-    console.log(`Color from the GET customization request: ${color}`)
-    res.render('customization', { color, opponentColor })
-})
+}) */
 
 app.post('/customize', (req, res) => {
     let { color, opponentColor } = req.body
