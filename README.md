@@ -1,6 +1,10 @@
-[Connect_4](public/images/Connect_4.png)
-# Man-vs-Machine-Connect-4-edition
-This repository contains a full-stack project that aims to recreate the functionality of [chess.com](https://www.chess.com/) but with a twist: instead of chess, it focuses on the game of Connect 4. The project incorporates intelligent agents capable of competing against human players.
+<p align="center">
+  <img src="public/images/menulogo.png" alt="Connect_4" width="300px">
+</p>
+
+<h1 align="center">Connect 4</h1>
+
+This repository contains a full-stack project that aims to recreate the functionality of [chess.com](https://www.chess.com) but with a twist: instead of chess, it focuses on the game of Connect 4. The project incorporates intelligent agents capable of competing against human players.
 
 ## Features
 * Play Connect 4: Enjoy the classic game of Connect 4 through a user-friendly interface.
