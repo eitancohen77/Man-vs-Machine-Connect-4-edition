@@ -26,6 +26,8 @@ This repository contains a full-stack project that aims to recreate the function
 
 ## How It Works
 - The user interface is built using HTML, CSS, JavaScript, and jQuery. These technologies are used to create an interactive interface that allows users to play the Connect 4 game with proper game logic.
+![Intro Video](https://github.com/eitancohen77/Man-vs-Machine-Connect-4-edition/assets/98838116/fd14ec8b-375d-4b05-9f46-5e48eb127dd5)
+
 - Express.js, a web application framework for Node.js, is employed to handle requests and routes in the project. It enables the creation of routes such as the game page, authentication page, and facilitates communication between the game and the intelligent agent for turn notifications.
 - MongoDB is utilized to store all user information and the history of previous games. It serves as the database for persistent data storage, ensuring user data and game history can be saved and retrieved.
 - User authentication and authorization are implemented using bcrypt, session management, and cookies. Bcrypt is used for secure password hashing and verification. Session management and cookies help maintain user sessions and provide authentication tokens, allowing users to access protected features and ensuring secure authorization.
